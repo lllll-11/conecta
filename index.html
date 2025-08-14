@@ -25,11 +25,10 @@
         .chart-container {
             position: relative;
             width: 100%;
+            height: 350px;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 350px;
-            max-height: 400px;
         }
         @media (min-width: 768px) {
             .chart-container {
@@ -79,15 +78,15 @@
         </nav>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
+    <main class="container mx-auto px-4 sm:px-6 py-12">
         <section id="hero" class="text-center py-20">
-            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-6">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-6 text-balance">
                 Un espacio seguro para crecer.
             </h1>
-            <p class="text-xl text-gray-600 max-w-4xl mx-auto mb-10">
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto mb-10">
                 Conecta + es una iniciativa dedicada a ofrecer apoyo psicológico gratuito a adolescentes, creando un puente de confianza con psicólogos y mentores voluntarios.
             </p>
-            <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg">
+            <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg inline-block">
                 ¡Quiero conectar!
             </a>
         </section>
@@ -95,20 +94,20 @@
         <section id="about" class="py-20 scroll-mt-24">
             <h2 class="text-4xl font-bold text-center mb-16">¿Qué es <span class="text-teal-600">Conecta</span>+?</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="text-gray-700 space-y-6 text-lg">
+                <div class="text-gray-700 space-y-6 text-base md:text-lg">
                     <p>
                         Somos una plataforma online donde adolescentes pueden encontrar un **espacio seguro y confidencial** para hablar sobre sus emociones, desafíos y preocupaciones. Nuestro objetivo es prevenir y mitigar problemas de salud mental al conectar a jóvenes con profesionales y estudiantes de psicología de forma gratuita.
                     </p>
                     <p>
                         Creemos que la salud mental es un derecho fundamental. Por eso, hemos creado un programa de sesiones grupales y tutorías individuales con voluntarios que están listos para escuchar sin juzgar.
                     </p>
-                    <div class="flex space-x-6 justify-center md:justify-start">
+                    <div class="flex flex-wrap gap-6 justify-center md:justify-start">
                         <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🔒</span> Confidencialidad</div>
                         <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🤝</span> Respeto</div>
                         <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🤗</span> Apoyo</div>
                     </div>
                 </div>
-                <div class="card p-8 text-center">
+                <div class="card p-8 text-center mt-8 md:mt-0">
                     <div class="text-6xl mb-4">💡</div>
                     <h3 class="text-2xl font-bold mb-2">Nuestra Misión</h3>
                     <p class="text-gray-600">
@@ -124,7 +123,7 @@
                 Estas estadísticas demuestran la urgente necesidad de espacios como <span class="font-semibold">Conecta +</span>. La salud mental en jóvenes es una crisis que no podemos ignorar.
             </p>
             <div class="grid lg:grid-cols-2 gap-12">
-                <div class="card p-8">
+                <div class="card p-4 sm:p-8">
                     <h3 class="text-2xl font-bold mb-4 text-center">Tendencia de Muertes por Suicidio en Jóvenes</h3>
                     <p class="text-gray-600 mb-6 text-center text-sm">
                         Cifra mundial estimada por cada 100,000 personas de 15-29 años.
@@ -133,7 +132,7 @@
                         <canvas id="suicideTrendChart"></canvas>
                     </div>
                 </div>
-                <div class="card p-8">
+                <div class="card p-4 sm:p-8">
                     <h3 class="text-2xl font-bold mb-4 text-center">Casos por Rangos de Edad (Ilustrativo)</h3>
                     <p class="text-gray-600 mb-6 text-center text-sm">
                         Distribución porcentual de casos de ansiedad y depresión en adolescentes.
@@ -151,23 +150,23 @@
         <section id="join" class="py-20 scroll-mt-24">
             <h2 class="text-4xl font-bold text-center mb-16">Únete a nuestra causa</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 text-lg text-gray-700">
+                <div class="space-y-6 text-base md:text-lg text-gray-700">
                     <p>Si eres psicólogo, estudiante de psicología o un mentor dispuesto a ofrecer tu tiempo para escuchar, te invitamos a ser parte de nuestra red de voluntarios.</p>
                     <p>Tu apoyo puede marcar una diferencia profunda en la vida de un adolescente.</p>
-                    <div class="flex items-center text-teal-600 font-semibold text-xl">
+                    <div class="flex items-center text-teal-600 font-semibold text-lg md:text-xl">
                         <span class="mr-3">⭐</span> Ofrecemos un certificado de participación.
                     </div>
-                    <div class="flex items-center text-teal-600 font-semibold text-xl">
+                    <div class="flex items-center text-teal-600 font-semibold text-lg md:text-xl">
                         <span class="mr-3">⭐</span> Es una excelente oportunidad para ganar experiencia.
                     </div>
                 </div>
-                <div class="card p-8 text-center">
+                <div class="card p-8 text-center mt-8 md:mt-0">
                     <div class="text-6xl mb-4">🙌</div>
                     <h3 class="text-2xl font-bold mb-2">¡Sé un voluntario!</h3>
                     <p class="text-gray-600 mb-6">
                         Si quieres unirte a nuestro equipo y ofrecer apoyo, déjanos tus datos.
                     </p>
-                    <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg">
+                    <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg inline-block">
                         Quiero ser voluntario
                     </a>
                 </div>
