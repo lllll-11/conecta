@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conecta + </title>
+    <link rel="icon" type="image/png" href="dc.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #3d3d3d;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #14b8a6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .btn-primary {
+            background-color: #14b8a6;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0d9488;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#" class="text-3xl font-extrabold text-gray-800 flex items-center">
+                    <img src="dc.png" alt="Logo" class="h-10 w-10 mr-2 sm:h-12 sm:w-12 object-contain">
+                    <span class="text-teal-600">Conecta</span>+
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="nav-link font-medium">Sobre Nosotros</a>
+                    <a href="#data" class="nav-link font-medium">Datos</a>
+                    <a href="#join" class="nav-link font-medium">Únete</a>
+                    <a href="#contact" class="nav-link font-medium">Contacto</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col items-center space-y-4 bg-white rounded-lg shadow-lg py-4">
+                <a href="#about" class="nav-link font-medium w-full text-center py-2">Sobre Nosotros</a>
+                <a href="#data" class="nav-link font-medium w-full text-center py-2">Datos</a>
+                <a href="#join" class="nav-link font-medium w-full text-center py-2">Únete</a>
+                <a href="#contact" class="nav-link font-medium w-full text-center py-2">Contacto</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="hero" class="text-center py-20">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-6">
+                Un espacio seguro para crecer.
+            </h1>
+            <p class="text-xl text-gray-600 max-w-4xl mx-auto mb-10">
+                Conecta + es una iniciativa dedicada a ofrecer apoyo psicológico gratuito a adolescentes, creando un puente de confianza con psicólogos y mentores voluntarios.
+            </p>
+            <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg text-lg">
+                ¡Quiero conectar!
+            </a>
+        </section>
+
+        <section id="about" class="py-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-16">¿Qué es <span class="text-teal-600">Conecta</span>+?</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-gray-700 space-y-6 text-lg">
+                    <p>
+                        Somos una plataforma online donde adolescentes pueden encontrar un **espacio seguro y confidencial** para hablar sobre sus emociones, desafíos y preocupaciones. Nuestro objetivo es prevenir y mitigar problemas de salud mental al conectar a jóvenes con profesionales y estudiantes de psicología de forma gratuita.
+                    </p>
+                    <p>
+                        Creemos que la salud mental es un derecho fundamental. Por eso, hemos creado un programa de sesiones grupales y tutorías individuales con voluntarios que están listos para escuchar sin juzgar.
+                    </p>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🔒</span> Confidencialidad</div>
+                        <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🤝</span> Respeto</div>
+                        <div class="flex items-center text-teal-600"><span class="text-2xl mr-2">🤗</span> Apoyo</div>
+                    </div>
+                </div>
+                <div class="card p-8 text-center">
+                    <div class="text-6xl mb-4">💡</div>
+                    <h3 class="text-2xl font-bold mb-2">Nuestra Misión</h3>
+                    <p class="text-gray-600">
+                        Construir una comunidad donde ningún adolescente se sienta solo, ofreciendo herramientas y apoyo emocional accesible para todos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="data" class="py-20 scroll-mt-24 bg-teal-50">
+            <h2 class="text-4xl font-bold text-center mb-6">La Cruda Realidad: ¿Por qué actuamos?</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12 text-lg">
+                Estas estadísticas demuestran la urgente necesidad de espacios como <span class="font-semibold">Conecta +</span>. La salud mental en jóvenes es una crisis que no podemos ignorar.
+            </p>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Tendencia de Muertes por Suicidio en Jóvenes</h3>
+                    <p class="text-gray-600 mb-6 text-center text-sm">
+                        Cifra mundial estimada por cada 100,000 personas de 15-29 años.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="suicideTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Casos por Rangos de Edad (Ilustrativo)</h3>
+                    <p class="text-gray-600 mb-6 text-center text-sm">
+                        Distribución porcentual de casos de ansiedad y depresión en adolescentes.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="ageDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-gray-500 text-sm mt-8">
+                *Los datos mostrados son ilustrativos y no representan estadísticas oficiales de un organismo específico, pero reflejan la tendencia y el problema real de salud mental en jóvenes a nivel global.
+            </p>
+        </section>
+
+        <section id="join" class="py-20 scroll-mt-24">
+            <h2 class="text-4xl font-bold text-center mb-16">Únete a nuestra causa</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 text-lg text-gray-700">
+                    <p>Si eres psicólogo, estudiante de psicología o un mentor dispuesto a ofrecer tu tiempo para escuchar, te invitamos a ser parte de nuestra red de voluntarios.</p>
+                    <p>Tu apoyo puede marcar una diferencia profunda en la vida de un adolescente.</p>
+                    <div class="flex items-center text-teal-600 font-semibold text-xl">
+                        <span class="mr-3">⭐</span> Ofrecemos un certificado de participación.
+                    </div>
+                    <div class="flex items-center text-teal-600 font-semibold text-xl">
+                        <span class="mr-3">⭐</span> Es una excelente oportunidad para ganar experiencia.
+                    </div>
+                </div>
+                <div class="card p-8 text-center">
+                    <div class="text-6xl mb-4">🙌</div>
+                    <h3 class="text-2xl font-bold mb-2">¡Sé un voluntario!</h3>
+                    <p class="text-gray-600 mb-6">
+                        Si quieres unirte a nuestro equipo y ofrecer apoyo, déjanos tus datos.
+                    </p>
+                    <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg">
+                        Quiero ser voluntario
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 scroll-mt-24 bg-gray-100">
+            <h2 class="text-4xl font-bold text-center mb-16">Conéctate con nosotros</h2>
+            <div class="max-w-xl mx-auto card p-8 md:p-12">
+                <p class="text-gray-600 text-center mb-8 text-lg">
+                    Dinos cómo podemos ayudarte o si quieres unirte a nuestro equipo.
+                </p>
+                <form id="contact-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 font-semibold mb-2">Nombre Completo</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-600 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-gray-700 font-semibold mb-2">Número de Teléfono</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-600 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <span class="block text-gray-700 font-semibold mb-2">Quiero...</span>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
+                            <div class="flex items-center">
+                                <input type="radio" id="razon-voluntario" name="razon" value="Voluntario para ayudar" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300" required>
+                                <label for="razon-voluntario" class="ml-3 block text-gray-700">Ser voluntario para ayudar</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="razon-paciente" name="razon" value="Paciente" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300">
+                                <label for="razon-paciente" class="ml-3 block text-gray-700">Recibir apoyo (paciente)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="mensajeAdicional" class="block text-gray-700 font-semibold mb-2">Mensaje (opcional)</label>
+                        <textarea id="mensajeAdicional" name="mensajeAdicional" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-600 focus:outline-none"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button id="submit-btn" type="submit" class="btn-primary text-white font-bold py-3 px-12 rounded-full shadow-lg">
+                            Enviar Mensaje
+                        </button>
+                    </div>
+                </form>
+                <div id="form-success-message" class="mt-6 p-4 bg-teal-100 text-teal-800 rounded-lg text-center hidden">
+                    ¡Gracias por conectar con nosotros! Nos pondremos en contacto contigo pronto.
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center text-sm">
+            <p>&copy; 2025 Conecta +. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const suicideTrendCtx = document.getElementById('suicideTrendChart').getContext('2d');
+            new Chart(suicideTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
+                    datasets: [{
+                        label: 'Tasa de Suicidio por 100k',
+                        data: [10.5, 11.2, 11.8, 12.5, 13.1, 12.9, 13.5, 14.2],
+                        backgroundColor: '#14b8a6',
+                        borderColor: '#14b8a6',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Tasa: ${context.raw} por 100k`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tasa de Muertes (por 100,000)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const ageDistributionCtx = document.getElementById('ageDistributionChart').getContext('2d');
+            new Chart(ageDistributionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['10-14 años', '15-19 años', '20-24 años'],
+                    datasets: [{
+                        label: 'Distribución de Casos (%)',
+                        data: [25, 55, 20],
+                        backgroundColor: ['#14b8a6', '#0d9488', '#0f766e'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Casos: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Porcentaje de Casos'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const form = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const successMessage = document.getElementById('form-success-message');
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbzbFouQ8q7lM-svGRYsm4D34YbdPBcprBxANJDhdBOQeC27kXv0__Bm9JX6Dj-idB_N/exec'; // <--- PEGA LA URL AQUÍ
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviando...';
+
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    razon: formData.get('razon'),
+                    mensajeAdicional: formData.get('mensajeAdicional')
+                };
+
+                fetch(webAppUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    if (result.result === 'success') {
+                        successMessage.classList.remove('hidden');
+                        form.reset();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al enviar el formulario. Por favor, intenta de nuevo.');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enviar Mensaje';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
