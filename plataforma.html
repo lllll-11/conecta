@@ -91,6 +91,20 @@
                         <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Etiqueta de Referencia (NO NOMBRES)</label>
                         <input type="text" name="case_title" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:bg-white focus:border-[#6ddbf3] transition-all" placeholder="Ej. Caso A (Baja participación)">
                     </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Grado</label>
+                            <select name="grado" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:bg-white focus:border-[#6ddbf3] transition-all appearance-none">
+                                <option value="1">1º Grado</option>
+                                <option value="2">2º Grado</option>
+                                <option value="3">3º Grado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Grupo</label>
+                            <input type="text" name="grupo" required class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:bg-white focus:border-[#6ddbf3] transition-all" placeholder="Ej. A">
+                        </div>
+                    </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">ID de Caso (Automático)</label>
                         <input type="text" name="case_id" id="next-case-id" readonly class="w-full px-5 py-4 rounded-2xl bg-slate-100 border border-slate-200 outline-none text-slate-500 cursor-not-allowed font-mono">
@@ -103,6 +117,12 @@
 
         <!-- VISTA: ADMIN DASHBOARD -->
         <div id="view-admin" class="view hidden">
+            <!-- Tabs de Navegación Admin -->
+            <div class="flex gap-2 mb-6">
+                <button class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold uppercase tracking-widest shadow-lg">Evidencias</button>
+                <button onclick="showView('admin-manage')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition-all">Gestión</button>
+            </div>
+
             <div class="bg-white p-4 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                     <div>
@@ -142,6 +162,50 @@
                 <div id="admin-content" class="space-y-4">
                     <!-- Contenido dinámico: Lista de practicantes o Lista de evidencias -->
                 </div>
+            </div>
+        </div>
+
+        <!-- VISTA: GESTIÓN ADMIN (Escuelas y Practicantes) -->
+        <div id="view-admin-manage" class="view hidden space-y-8">
+            <div class="flex gap-2 mb-6">
+                <button onclick="showView('admin')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition-all">Evidencias</button>
+                <button class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold uppercase tracking-widest shadow-lg">Gestión</button>
+            </div>
+
+            <div id="manage-msg" class="hidden p-4 rounded-2xl text-center text-sm font-bold animate-bounce mb-6"></div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Crear Escuela -->
+                <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+                    <h3 class="text-xl font-black text-slate-800 mb-6 uppercase tracking-tight">Nueva Escuela</h3>
+                    <form onsubmit="handleCreateSchool(event)" class="space-y-4">
+                        <input name="name" required placeholder="Nombre de la Institución" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#6ddbf3]/20 focus:border-[#6ddbf3] outline-none transition-all" />
+                        <button type="submit" class="w-full py-4 bg-slate-900 hover:bg-[#6ddbf3] text-white rounded-2xl font-black uppercase text-xs tracking-widest transition-all">Registrar Escuela</button>
+                    </form>
+                </div>
+
+                <!-- Crear Practicante -->
+                <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+                    <h3 class="text-xl font-black text-slate-800 mb-6 uppercase tracking-tight">Nuevo Perfil</h3>
+                    <form onsubmit="handleCreatePractitioner(event)" class="space-y-4">
+                        <input name="nombre" required placeholder="Nombre Completo" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 outline-none text-sm" />
+                        <input name="password" required type="password" placeholder="Contraseña" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 outline-none text-sm" />
+                        <div class="grid grid-cols-2 gap-2">
+                            <input name="correo" required type="email" placeholder="Correo" class="w-full px-4 py-2 rounded-xl bg-slate-50 border text-xs" />
+                            <input name="universidad" required placeholder="Universidad" class="w-full px-4 py-2 rounded-xl bg-slate-50 border text-xs" />
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2 mb-1 block tracking-widest">Asignar Escuela</label>
+                            <select name="school" id="manage-school-select" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-[#6ddbf3]/30 outline-none text-xs font-bold"></select>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-[#6ddbf3] text-white rounded-2xl font-black uppercase text-xs tracking-widest shadow-lg shadow-[#6ddbf3]/20 hover:scale-105 transition-all">Crear Perfil</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
+                <h3 class="text-xl font-black text-slate-800 mb-6 uppercase tracking-tight">Sedes Activas</h3>
+                <div id="manage-schools-list" class="grid sm:grid-cols-2 gap-3"></div>
             </div>
         </div>
 
@@ -204,7 +268,7 @@
                         <button id="btn-submit-evidence" type="submit" disabled class="submit-btn w-full py-5 rounded-2xl font-black uppercase tracking-widest text-xs text-white bg-slate-300 cursor-not-allowed transition-all shadow-xl active:scale-[0.98]">
                             Finalizar Sesión
                         </button>
-                        <p class="text-[9px] text-slate-400 text-center italic mt-2 tracking-tight">La información registrada respeta la confidencialidad absoluta de los casos.</p>
+                        <p class="text-[9px] text-slate-400 text-center italic mt-2 tracking-tight">El programa se desarrolla dentro del entorno escolar bajo autorización institucional y con enfoque de acompañamiento general, respetando la confidencialidad de los estudiantes.</p>
                     </form>
                 </div>
             </div>
@@ -220,10 +284,12 @@
 
     <script>
         // REEMPLAZA CON TU URL DE APPS SCRIPT
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy2ENxpDpHmB2YRxL9vN8Szh0IL7RLwcTAN9TzU6s04oODLqqCi5vcF_ZmnUaxBlRyGw/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
 
         let allCases = []; 
         let allEvidences = [];
+        let allSchools = [];
+        let currentSchool = localStorage.getItem('practitioner_school') || 'General';
 
         // PERSISTENCIA LOCAL Y OFFLINE SYNC
         document.addEventListener('DOMContentLoaded', () => {
@@ -290,10 +356,11 @@
             try {
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
-                    body: JSON.stringify({ action: 'get_practitioner_data' })
+                    body: JSON.stringify({ action: 'get_practitioner_data', school: currentSchool })
                 });
                 const result = await response.json();
                 if (result.result === 'success') {
+                    if (result.school) currentSchool = result.school;
                     allCases = (result.cases || []).map(c => ({...c, case_id: String(c.case_id)}));
                     allEvidences = (result.evidences || []).map(e => ({...e, case_id: String(e.case_id), notas: e.notas || e.notes}));
                     renderCaseList();
@@ -317,7 +384,7 @@
                 <div onclick="openCaseFolder('${c.case_id}')" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex justify-between items-center hover:border-[#6ddbf3] hover:shadow-xl hover:shadow-slate-200/50 transition-all cursor-pointer group">
                     <div class="flex-1 min-w-0 pr-4">
                         <h4 class="font-black text-slate-800 group-hover:text-[#6ddbf3] uppercase tracking-tight transition-colors break-words">Caso: ${c.case_id} ${c.case_title ? `(${c.case_title})` : ''}</h4>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Creado por: ${c.practitioner_creator}</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">${c.grado ? `${c.grado}º${c.grupo} • ` : ''}Creado por: ${c.practitioner_creator}</p>
                     </div>
                     <div class="flex items-center gap-3 flex-shrink-0">
                         <span class="text-[9px] font-black bg-slate-50 px-2 py-1 rounded-full text-slate-400 uppercase tracking-tight">
@@ -350,7 +417,7 @@
             document.getElementById('case-header-info').innerHTML = `
                 <div>
                     <h3 class="text-xl font-black text-slate-800 uppercase tracking-tight">Caso: ${selectedCase.case_id} ${selectedCase.case_title ? `(${selectedCase.case_title})` : ''}</h3>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Responsable: ${selectedCase.practitioner_creator} • Inicio: ${selectedCase.creation_date}</p>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">${selectedCase.grado ? `Grado: ${selectedCase.grado}º${selectedCase.grupo} • ` : ''}Responsable: ${selectedCase.practitioner_creator} • Inicio: ${selectedCase.creation_date}</p>
                 </div>
                 <div class="text-right">
                     <span class="block text-[10px] font-black text-slate-300 uppercase tracking-widest">Estado</span>
@@ -415,6 +482,10 @@
             document.getElementById(`view-${viewName}`).classList.add('active');
             document.getElementById(`view-${viewName}`).classList.remove('hidden');
             
+            if (viewName === 'admin-manage') {
+                loadAdminSetupData();
+            }
+
             const navActions = document.getElementById('nav-actions');
             if (viewName !== 'login') {
                 const name = localStorage.getItem('practitioner_name') || '';
@@ -466,13 +537,15 @@
             try {
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
-                    body: JSON.stringify({ action: 'get_evidences' })
+                    // Usamos la acción unificada para admin que trae casos, evidencias y escuelas
+                    body: JSON.stringify({ action: 'get_admin_dashboard_data' }) 
                 });
                 const result = await response.json();
 
                 if (result.result === 'success') {
-                    // Normalizamos los IDs a String para que las comparaciones no fallen
-                    allEvidences = (result.data || []).map(ev => ({...ev, case_id: String(ev.case_id)}));
+                    allCases = (result.cases || []).map(c => ({...c, case_id: String(c.case_id)}));
+                    allEvidences = (result.evidences || []).map(ev => ({...ev, case_id: String(ev.case_id)}));
+                    allSchools = result.schools || []; // ESTA LÍNEA CORRIGE EL BLOQUEO
                     renderPractitionerList();
                 } else {
                     content.innerHTML = `<div class="py-12 text-center text-red-500">Error: ${result.message}</div>`;
@@ -483,43 +556,76 @@
         }
 
         function renderPractitionerList() {
+            renderAdminSchoolList();
+        }
+
+        function renderAdminSchoolList() {
             const content = document.getElementById('admin-content');
             const subtitle = document.getElementById('admin-subtitle');
             const backBtn = document.getElementById('admin-back-btn');
             const statsDiv = document.getElementById('admin-stats');
             const searchContainer = document.getElementById('admin-search-container');
             
-            subtitle.textContent = "Selecciona un practicante para revisar.";
+            subtitle.textContent = "Selecciona una Escuela Secundaria.";
             backBtn.classList.add('hidden');
-            backBtn.setAttribute('onclick', 'renderPractitionerList()');
             statsDiv.classList.remove('hidden');
             searchContainer.classList.remove('hidden');
 
-            if (allEvidences.length === 0) {
-                content.innerHTML = `<p class="text-center py-10 text-slate-400">No hay evidencias registradas aún.</p>`;
-                statsDiv.classList.add('hidden');
+            if (allSchools.length === 0) {
+                content.innerHTML = `<p class="text-center py-10 text-slate-400 italic">Cargando escuelas...</p>`;
                 return;
             }
 
             // Calcular estadísticas globales
-            const redCount = allEvidences.filter(e => e.semaforo === 'Rojo').length;
-            const yellowCount = allEvidences.filter(e => e.semaforo === 'Amarillo').length;
-            
-            document.getElementById('stat-red').textContent = redCount;
-            document.getElementById('stat-yellow').textContent = yellowCount;
+            document.getElementById('stat-red').textContent = allEvidences.filter(e => e.semaforo === 'Rojo').length;
+            document.getElementById('stat-yellow').textContent = allEvidences.filter(e => e.semaforo === 'Amarillo').length;
             document.getElementById('stat-total').textContent = allEvidences.length;
 
-            // Obtener lista única de practicantes
-            const practitioners = [...new Set(allEvidences.map(ev => ev.practicante))];
+            let html = `<div class="grid gap-3">`;
+            allSchools.forEach(name => {
+                const schoolCases = allCases.filter(c => c.school === name);
+                const schoolEvidences = allEvidences.filter(e => schoolCases.some(sc => sc.case_id === e.case_id));
+
+                html += `
+                    <button onclick="renderAdminSchoolPractitioners('${name}')" class="flex justify-between items-center p-6 bg-white border border-slate-100 rounded-[2rem] hover:border-[#6ddbf3] hover:shadow-xl hover:shadow-slate-200/50 transition-all group text-left shadow-sm">
+                        <div>
+                            <h4 class="font-black text-slate-800 uppercase tracking-tight transition-colors group-hover:text-[#6ddbf3]">${name}</h4>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">${schoolCases.length} casos • ${schoolEvidences.length} evidencias</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-300 group-hover:text-[#6ddbf3] transition"></i>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+
+        function renderAdminSchoolPractitioners(schoolName) {
+            const content = document.getElementById('admin-content');
+            const subtitle = document.getElementById('admin-subtitle');
+            const backBtn = document.getElementById('admin-back-btn');
             
+            subtitle.textContent = `Practicantes en ${schoolName}`;
+            backBtn.classList.remove('hidden');
+            backBtn.setAttribute('onclick', 'renderAdminSchoolList()');
+            document.getElementById('admin-stats').classList.add('hidden');
+
+            const practitioners = [...new Set(allCases.filter(c => c.school === schoolName).map(c => c.practitioner_creator))];
+
+            if (practitioners.length === 0) {
+                content.innerHTML = `<p class="text-center py-10 text-slate-400">No hay practicantes registrados en esta sede.</p>`;
+                return;
+            }
+
             let html = `<div class="grid gap-3">`;
             practitioners.forEach(name => {
-                const pEvidences = allEvidences.filter(ev => ev.practicante === name);
+                const pCases = allCases.filter(c => c.practitioner_creator === name && c.school === schoolName);
+                const pEvidences = allEvidences.filter(e => pCases.some(pc => pc.case_id === e.case_id));
                 const pRed = pEvidences.filter(e => e.semaforo === 'Rojo').length;
                 const pYellow = pEvidences.filter(e => e.semaforo === 'Amarillo').length;
 
                 html += `
-                    <button onclick="renderAdminPractitionerCases('${name}')" class="flex justify-between items-center p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-[#6ddbf3] hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group text-left">
+                    <button onclick="renderAdminPractitionerCases('${name}', '${schoolName}')" class="flex justify-between items-center p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-[#6ddbf3] hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group text-left">
                         <div>
                             <h4 class="font-black text-slate-800 uppercase tracking-tight transition-colors group-hover:text-[#6ddbf3]">${name}</h4>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">${pEvidences.length} evidencias registradas</p>
@@ -566,21 +672,21 @@
             renderCardsHtml(evidences);
         }
 
-        function renderAdminPractitionerCases(practitionerName) {
+        function renderAdminPractitionerCases(practitionerName, schoolName) {
             const content = document.getElementById('admin-content');
             const subtitle = document.getElementById('admin-subtitle');
             const backBtn = document.getElementById('admin-back-btn');
             const statsDiv = document.getElementById('admin-stats');
             const searchContainer = document.getElementById('admin-search-container');
             
-            subtitle.textContent = `Casos atendidos por ${practitionerName}`;
+            subtitle.textContent = `Casos de ${practitionerName} (${schoolName})`;
             backBtn.classList.remove('hidden');
-            backBtn.setAttribute('onclick', 'renderPractitionerList()');
+            backBtn.setAttribute('onclick', `renderAdminSchoolPractitioners('${schoolName}')`);
             statsDiv.classList.add('hidden');
             searchContainer.classList.add('hidden');
 
-            const pEvidences = allEvidences.filter(ev => String(ev.practicante) === String(practitionerName));
-            const uniqueCaseIds = [...new Set(pEvidences.map(ev => String(ev.case_id)))];
+            const pCases = allCases.filter(c => c.practitioner_creator === practitionerName && c.school === schoolName);
+            const uniqueCaseIds = pCases.map(c => String(c.case_id));
 
             if (uniqueCaseIds.length === 0) {
                 content.innerHTML = `<p class="text-center py-10 text-slate-400">No hay casos registrados para este practicante.</p>`;
@@ -589,12 +695,13 @@
 
             let html = `<div class="grid gap-3">`;
             uniqueCaseIds.forEach(caseId => {
+                const pEvidences = allEvidences.filter(ev => String(ev.practicante) === String(practitionerName));
                 const caseEvidences = pEvidences.filter(e => e.case_id === caseId);
                 const red = caseEvidences.filter(e => e.semaforo === 'Rojo').length;
                 const yellow = caseEvidences.filter(e => e.semaforo === 'Amarillo').length;
                 
                 html += `
-                    <button onclick="renderAdminCaseSessions('${caseId}', '${practitionerName}')" class="flex justify-between items-center p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-[#6ddbf3] hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group text-left">
+                    <button onclick="renderAdminCaseSessions('${caseId}', '${practitionerName}', '${schoolName}')" class="flex justify-between items-center p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-[#6ddbf3] hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all group text-left">
                         <div class="flex-1 min-w-0 pr-4">
                             <h4 class="font-black text-slate-800 uppercase tracking-tight transition-colors group-hover:text-[#6ddbf3] break-words">Caso: ${caseId}</h4>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">${caseEvidences.length} sesiones registradas</p>
@@ -613,13 +720,13 @@
             content.innerHTML = html;
         }
 
-        function renderAdminCaseSessions(caseId, practitionerName) {
+        function renderAdminCaseSessions(caseId, practitionerName, schoolName) {
             const subtitle = document.getElementById('admin-subtitle');
             const backBtn = document.getElementById('admin-back-btn');
             const content = document.getElementById('admin-content');
             
             subtitle.textContent = `Sesiones del Caso ${caseId} (${practitionerName})`;
-            backBtn.setAttribute('onclick', `renderAdminPractitionerCases('${practitionerName}')`);
+            backBtn.setAttribute('onclick', `renderAdminPractitionerCases('${practitionerName}', '${schoolName}')`);
 
             // Forzamos comparación de strings para evitar errores de tipo (Número vs Texto)
             const filtered = allEvidences.filter(ev => String(ev.case_id) === String(caseId) && String(ev.practicante) === String(practitionerName));
@@ -721,6 +828,66 @@
             }
             
             localStorage.setItem('admin_reviewed_items', JSON.stringify(reviewedItems));
+        }
+
+        // --- FUNCIONES DE GESTIÓN ADMIN ---
+
+        async function loadAdminSetupData() {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'get_admin_setup_data' })
+                });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    allSchools = result.schools || [];
+                    const select = document.getElementById('manage-school-select');
+                    const list = document.getElementById('manage-schools-list');
+                    if (select) select.innerHTML = allSchools.map(s => `<option value="${s}">${s}</option>`).join('');
+                    if (list) list.innerHTML = allSchools.map(s => `<div class="p-4 bg-slate-50 rounded-xl text-sm font-bold text-slate-600 flex justify-between items-center">${s} <i class="fas fa-school text-[#6ddbf3]"></i></div>`).join('');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function handleCreateSchool(e) {
+            e.preventDefault();
+            const name = e.target.name.value;
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'create_school', data: { name } })
+            });
+            const result = await response.json();
+            if (result.result === 'success') {
+                showManageMsg('Sede registrada con éxito', 'bg-emerald-50 text-emerald-600');
+                e.target.reset();
+                loadAdminSetupData();
+            }
+        }
+
+        async function handleCreatePractitioner(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            data.turno = "Matutino";
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'register', data })
+            });
+            const result = await response.json();
+            if (result.result === 'success') {
+                showManageMsg('Perfil creado con éxito', 'bg-emerald-50 text-emerald-600');
+                e.target.reset();
+            }
+        }
+
+        function showManageMsg(text, classes) {
+            const msg = document.getElementById('manage-msg');
+            if (msg) {
+                msg.textContent = text;
+                msg.className = `p-4 rounded-2xl text-center text-sm font-bold animate-bounce block ${classes}`;
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 4000);
+            }
         }
 
         // Función Genérica para Enviar Datos

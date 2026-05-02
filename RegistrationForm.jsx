@@ -7,10 +7,11 @@ const RegistrationForm = ({ onBack }) => {
     correo: '',
     password: '',
     universidad: '',
-    turno: 'Matutino'
+    turno: 'Matutino',
+    school: 'General'
   });
 
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy2ENxpDpHmB2YRxL9vN8Szh0IL7RLwcTAN9TzU6s04oODLqqCi5vcF_ZmnUaxBlRyGw/exec';
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

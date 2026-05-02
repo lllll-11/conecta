@@ -11,6 +11,10 @@ por parte de practicantes, manteniendo la privacidad de los alumnos, y
 permite al director del programa supervisar el progreso de las 
 intervenciones.
 
+El programa se desarrolla dentro del entorno escolar bajo autorización 
+institucional y con enfoque de acompañamiento general, respetando la 
+confidencialidad de los estudiantes.
+
 2. ARQUITECTURA DEL SISTEMA
 ------------------------------------------------------------------------
 El proyecto utiliza una arquitectura "Serverless" basada en:
@@ -35,35 +39,42 @@ C) App.jsx, EvidenceDashboard.jsx, RegistrationForm.jsx:
    - Login de usuario.
    - Directorio de casos anónimos.
    - Registro de evidencias (mínimo 200 caracteres).
-   - Panel de administración.
+   - Panel de administración y Gestión de Escuelas/Practicantes.
 
 D) Script.gs (Google Apps Script):
    Lógica del servidor que procesa las peticiones POST y gestiona 
    la lectura/escritura en las hojas: 'Practicantes', 'Casos', 
-   'Evidencias' y 'Contactos'.
+   'Evidencias', 'Contactos' y 'Escuelas'.
 
 4. FUNCIONALIDADES CLAVE
 ------------------------------------------------------------------------
 I. GESTIÓN DE CASOS ANÓNIMOS
 Para proteger la identidad de los menores, el sistema genera IDs 
-numéricos únicos y utiliza "Etiquetas de Referencia" descriptivas 
-en lugar de nombres reales.
+numéricos únicos y utiliza "Etiquetas de Referencia" descriptivas. 
+Los casos están vinculados a una ESCUELA específica para evitar mezclas 
+entre instituciones.
 
-II. REGISTRO DE EVIDENCIAS
+II. MULTI-ESCUELA
+El sistema filtra automáticamente la información basada en la escuela 
+asignada al perfil del practicante en la hoja 'Practicantes'.
+
+III. REGISTRO DE EVIDENCIAS
 Los practicantes registran cada sesión indicando:
 - Tipo de intervención (Individual, Grupal, Canalización).
 - Semáforo de prioridad (Verde: Estable, Amarillo: Riesgo, Rojo: Urgente).
 - Notas de avance (Validación obligatoria de 200 caracteres mínimo).
 - Consentimiento informado (Checklist obligatorio).
 
-III. PANEL ADMINISTRATIVO (ROL: ANDRIY)
+IV. PANEL ADMINISTRATIVO Y GESTIÓN
 El administrador tiene acceso total para:
 - Ver el historial global de todas las intervenciones.
 - Filtrar sesiones por practicante o ID de caso.
 - Marcar sesiones como "Revisadas" (persistencia local).
 - Visualizar estadísticas de riesgo (conteo de semáforos).
+- Crear nuevas Escuelas.
+- Registrar Practicantes y asignarlos a una Escuela.
 
-IV. FORMULARIO DE CONTACTO E INTEGRACIÓN DE CORREO
+V. FORMULARIO DE CONTACTO E INTEGRACIÓN DE CORREO
 El formulario en index.html envía una acción 'contact_request'. El 
 script de Google inserta los datos en la hoja 'Contactos' y dispara un 
 correo electrónico automático al director con los detalles del interesado.
@@ -78,6 +89,7 @@ El script de Google responde a las siguientes acciones:
 - 'get_evidences': (Admin) Obtiene el historial completo de sesiones.
 - 'contact_request': Registra prospectos y envía alertas por email.
 - 'register': Permite el registro de nuevos practicantes.
+- 'get_admin_dashboard_data': Obtiene todos los casos, evidencias y escuelas para el panel global del admin.
 
 6. SEGURIDAD Y PRIVACIDAD
 ------------------------------------------------------------------------
@@ -89,8 +101,9 @@ El script de Google responde a las siguientes acciones:
 
 7. GUÍA DE DESPLIEGUE
 ------------------------------------------------------------------------
-1. Preparar Google Sheet: Crear hojas 'Practicantes', 'Casos', 
-   'Evidencias' y 'Contactos'.
+1. Preparar Google Sheet: Crear hojas 'Practicantes', 'Casos', 'Evidencias', 'Contactos' y 'Escuelas'.
+   - Hoja 'Practicantes' debe tener la columna 'Escuela' (G).
+   - Hoja 'Casos' debe tener la columna 'Escuela' (G).
 2. Configurar Script: Pegar el código .gs en el editor de scripts 
    viculado a la hoja.
 3. Implementar: Publicar como "Aplicación Web", acceso "Cualquiera".

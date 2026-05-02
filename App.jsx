@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import EvidenceDashboard from './EvidenceDashboard';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwy2ENxpDpHmB2YRxL9vN8Szh0IL7RLwcTAN9TzU6s04oODLqqCi5vcF_ZmnUaxBlRyGw/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
 
 function App() {
   const [practitioner, setPractitioner] = useState(localStorage.getItem('practitioner_name'));
+  const [school, setSchool] = useState(localStorage.getItem('practitioner_school'));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -31,11 +32,16 @@ function App() {
       // IMPORTANTE: Verifica que tu script de Google devuelva { "result": "success" }
       // y que en tu Google Sheet los nombres coincidan exactamente (Ana != ana)
       if (result && result.result === 'success') {
-        setSuccess(`¡Bienvenido(a), ${data.nombre}! Sesión iniciada con éxito.`);
-        localStorage.setItem('practitioner_name', data.nombre);
+        const isAdmin = result.message === 'Admin' || data.nombre.toLowerCase() === 'andriy';
+        const displayName = isAdmin ? `${data.nombre} (Admin)` : data.nombre;
+
+        setSuccess(`¡Bienvenido(a), ${displayName}! Sesión iniciada con éxito.`);
+        localStorage.setItem('practitioner_name', displayName);
+        localStorage.setItem('practitioner_school', result.school || 'General');
         
         setTimeout(() => {
-          setPractitioner(data.nombre);
+          setPractitioner(displayName);
+          setSchool(result.school || 'General');
           setSuccess('');
         }, 1500);
       } else {
@@ -51,7 +57,9 @@ function App() {
 
   const logout = () => {
     localStorage.removeItem('practitioner_name');
+    localStorage.removeItem('practitioner_school');
     setPractitioner(null);
+    setSchool(null);
   };
 
   return (
@@ -122,7 +130,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <EvidenceDashboard practitioner={practitioner} />
+          <EvidenceDashboard practitioner={practitioner} school={school} />
         )}
       </main>
     </div>
