@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EvidenceDashboard from './EvidenceDashboard';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdCIGgJ88Pngk88KTlWQEbafKPNkGLWJUBXyxugaIqG-MeH4uCE0CiezWhnkEOpQGYOQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwy2ENxpDpHmB2YRxL9vN8Szh0IL7RLwcTAN9TzU6s04oODLqqCi5vcF_ZmnUaxBlRyGw/exec';
 
 function App() {
   const [practitioner, setPractitioner] = useState(localStorage.getItem('practitioner_name'));
@@ -55,11 +55,11 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#6ddbf3]/30">
-      <header className="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f8f7f4] font-sans text-slate-900 selection:bg-[#6ddbf3]/30">
+      <header className="bg-white/70 backdrop-blur-lg border-b border-[#6ddbf3]/20 py-4 px-6 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#6ddbf3] italic tracking-tighter">
-            Conecta<span className="text-slate-800">+</span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tighter">
+            Conecta<span className="text-[#6ddbf3]">+</span>
           </h1>
           {practitioner && (
             <div className="flex items-center gap-4">
@@ -68,7 +68,7 @@ function App() {
               </span>
               <button 
                 onClick={logout}
-                className="text-sm font-semibold text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg transition"
+                className="text-sm font-bold text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition-all active:scale-95"
               >
                 Cerrar Sesión
               </button>
@@ -79,11 +79,11 @@ function App() {
 
       <main className="max-w-4xl mx-auto p-4 py-8">
         {!practitioner ? (
-          <div className="max-w-md mx-auto pt-12">
-            <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-extrabold text-slate-800">Acceso Privado</h2>
-                <p className="text-slate-500 mt-2">Portal de gestión para practicantes</p>
+          <div className="max-w-md mx-auto pt-8 sm:pt-16">
+            <div className="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-100">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Acceso Privado</h2>
+                <p className="text-slate-500 mt-2 text-sm font-medium">Portal de gestión para practicantes</p>
               </div>
 
               <form onSubmit={handleLogin} className="space-y-5">
@@ -98,18 +98,18 @@ function App() {
                   </div>
                 )}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1 tracking-widest">Nombre Completo</label>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Nombre Completo</label>
                   <input name="nombre" type="text" required placeholder="Ej. Ana García"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-[#6ddbf3] outline-none transition" />
+                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#6ddbf3]/20 focus:border-[#6ddbf3] outline-none transition-all" />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1 tracking-widest">Contraseña</label>
+                  <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">Contraseña</label>
                   <input name="password" type="password" required placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-[#6ddbf3] outline-none transition" />
+                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#6ddbf3]/20 focus:border-[#6ddbf3] outline-none transition-all" />
                 </div>
                 <button 
                   disabled={loading}
-                  className="w-full py-4 bg-[#6ddbf3] hover:opacity-90 disabled:bg-slate-300 text-white font-bold rounded-2xl shadow-lg transition-all active:scale-[0.98]"
+                  className="w-full py-5 bg-slate-900 hover:bg-[#6ddbf3] disabled:bg-slate-300 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-[0.98] mt-4"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">

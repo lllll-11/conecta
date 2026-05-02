@@ -1,0 +1,117 @@
+========================================================================
+DOCUMENTACIÓN TÉCNICA Y DE PROYECTO: CONECTA+
+========================================================================
+
+1. DESCRIPCIÓN GENERAL
+------------------------------------------------------------------------
+Conecta+ es una plataforma integral diseñada para el apoyo psicológico y 
+detección temprana de casos emocionales en el entorno escolar (enfocado 
+inicialmente en Salina Cruz). El sistema facilita el registro de sesiones 
+por parte de practicantes, manteniendo la privacidad de los alumnos, y 
+permite al director del programa supervisar el progreso de las 
+intervenciones.
+
+2. ARQUITECTURA DEL SISTEMA
+------------------------------------------------------------------------
+El proyecto utiliza una arquitectura "Serverless" basada en:
+- FRONTEND: Landing Page (HTML/Tailwind) y App de Gestión (React/JSX).
+- BACKEND: Google Apps Script (GAS) actuando como API intermediaria.
+- BASE DE DATOS: Google Sheets (Hoja de Cálculo) para persistencia.
+- ESTILOS: Tailwind CSS para una interfaz moderna y responsiva.
+- ANIMACIONES: GSAP para transiciones fluidas en la landing page.
+
+3. ESTRUCTURA DE ARCHIVOS
+------------------------------------------------------------------------
+A) index.html: 
+   Landing page principal. Presenta el programa a las escuelas y 
+   contiene el formulario de captación de clientes (contact_request).
+
+B) plataforma.html: 
+   Punto de entrada para el portal de practicantes y administradores 
+   basado en Vanilla JS (versión ligera).
+
+C) App.jsx, EvidenceDashboard.jsx, RegistrationForm.jsx:
+   Componentes de la versión avanzada en React que manejan el flujo de:
+   - Login de usuario.
+   - Directorio de casos anónimos.
+   - Registro de evidencias (mínimo 200 caracteres).
+   - Panel de administración.
+
+D) Script.gs (Google Apps Script):
+   Lógica del servidor que procesa las peticiones POST y gestiona 
+   la lectura/escritura en las hojas: 'Practicantes', 'Casos', 
+   'Evidencias' y 'Contactos'.
+
+4. FUNCIONALIDADES CLAVE
+------------------------------------------------------------------------
+I. GESTIÓN DE CASOS ANÓNIMOS
+Para proteger la identidad de los menores, el sistema genera IDs 
+numéricos únicos y utiliza "Etiquetas de Referencia" descriptivas 
+en lugar de nombres reales.
+
+II. REGISTRO DE EVIDENCIAS
+Los practicantes registran cada sesión indicando:
+- Tipo de intervención (Individual, Grupal, Canalización).
+- Semáforo de prioridad (Verde: Estable, Amarillo: Riesgo, Rojo: Urgente).
+- Notas de avance (Validación obligatoria de 200 caracteres mínimo).
+- Consentimiento informado (Checklist obligatorio).
+
+III. PANEL ADMINISTRATIVO (ROL: ANDRIY)
+El administrador tiene acceso total para:
+- Ver el historial global de todas las intervenciones.
+- Filtrar sesiones por practicante o ID de caso.
+- Marcar sesiones como "Revisadas" (persistencia local).
+- Visualizar estadísticas de riesgo (conteo de semáforos).
+
+IV. FORMULARIO DE CONTACTO E INTEGRACIÓN DE CORREO
+El formulario en index.html envía una acción 'contact_request'. El 
+script de Google inserta los datos en la hoja 'Contactos' y dispara un 
+correo electrónico automático al director con los detalles del interesado.
+
+5. ESPECIFICACIONES TÉCNICAS (API ACTIONS)
+------------------------------------------------------------------------
+El script de Google responde a las siguientes acciones:
+- 'login': Valida credenciales contra la hoja 'Practicantes'.
+- 'create_case': Crea un nuevo registro en la hoja 'Casos'.
+- 'evidence': Registra una sesión en la hoja 'Evidencias'.
+- 'get_practitioner_data': Obtiene casos y evidencias para el dashboard.
+- 'get_evidences': (Admin) Obtiene el historial completo de sesiones.
+- 'contact_request': Registra prospectos y envía alertas por email.
+- 'register': Permite el registro de nuevos practicantes.
+
+6. SEGURIDAD Y PRIVACIDAD
+------------------------------------------------------------------------
+- Los datos se transmiten vía HTTPS a los servidores de Google.
+- El acceso a la plataforma está restringido por nombre y contraseña.
+- Se promueve el uso de lenguaje profesional y anónimo en las notas.
+- Existe un "Modo Offline" básico que guarda envíos pendientes en 
+  localStorage si se pierde la conexión.
+
+7. GUÍA DE DESPLIEGUE
+------------------------------------------------------------------------
+1. Preparar Google Sheet: Crear hojas 'Practicantes', 'Casos', 
+   'Evidencias' y 'Contactos'.
+2. Configurar Script: Pegar el código .gs en el editor de scripts 
+   viculado a la hoja.
+3. Implementar: Publicar como "Aplicación Web", acceso "Cualquiera".
+4. Actualizar URLs: Pegar la URL generada (exec) en la constante 
+   GAS_URL de los archivos frontend.
+5. Autorizar: Ejecutar una función de prueba manualmente en el editor 
+   de GAS para aceptar los permisos de envío de email y manejo de Sheets.
+
+8. DISEÑO VISUAL (LENGUAJE DE MARCA)
+------------------------------------------------------------------------
+- Color Primario: Cyan (#6ddbf3) - Simboliza claridad y conexión.
+- Color de Base: Slate-900 - Aporta solidez y profesionalismo.
+- Tipografía: Inter (con pesos 400 a 900 para jerarquía).
+- Radio de Bordes: rounded-[2.5rem] (Cápsulas suaves para amigabilidad).
+
+9. CRONOGRAMA Y MANTENIMIENTO
+------------------------------------------------------------------------
+- Vigencia del Proyecto: 2026.
+- Contacto del Director: Andriy Eduardo Torres Villaseñor.
+- Canal de soporte: Teléfono directo integrado en el footer.
+
+========================================================================
+FIN DE LA DOCUMENTACIÓN
+========================================================================
