@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conecta+ | Plataforma de Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .view.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-[#6ddbf3] italic">Conecta<span class="text-slate-800">+</span></a>
+            <div id="nav-actions">
+                <!-- Dinámico -->
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 py-8">
+        
+        <!-- VISTA: LOGIN -->
+        <div id="view-login" class="view active py-12">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-extrabold text-slate-800">Acceso Privado</h2>
+                    <p class="text-slate-500 text-sm mt-2">Ingresa las credenciales proporcionadas por la dirección de Conecta+.</p>
+                </div>
+                
+                <!-- Contenedor para mensajes de login -->
+                <div id="login-msg" class="hidden mb-6 p-4 rounded-xl text-sm text-center font-medium transition-all duration-300"></div>
+
+                <form id="form-login" class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Nombre Completo</label>
+                        <input type="text" name="nombre" required 
+                               class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-[#6ddbf3] outline-none transition" 
+                               placeholder="Ej. Ana García">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Contraseña de Acceso</label>
+                        <input type="password" name="password" required 
+                               class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-[#6ddbf3] outline-none transition" 
+                               placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="submit-btn w-full py-4 rounded-xl font-bold text-white bg-[#6ddbf3] hover:opacity-90 transition shadow-lg mt-4">
+                        Ingresar al Portal
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VISTA: DIRECTORIO DE CASOS (Practicantes) -->
+        <div id="view-dashboard" class="view hidden">
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Directorio de Casos</h2>
+                    <button onclick="showView('create-case')" class="w-full sm:w-auto bg-[#6ddbf3] text-white px-6 py-3 rounded-2xl font-bold shadow-lg hover:opacity-90 transition flex items-center justify-center gap-2">
+                        <i class="fas fa-plus"></i> Crear Nuevo Caso
+                    </button>
+                </div>
+
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="case-search" oninput="filterCases()" placeholder="Buscar por ID o etiqueta..." 
+                        class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-slate-100 shadow-sm focus:ring-4 focus:ring-[#6ddbf3]/10 outline-none transition-all">
+                </div>
+
+                <div id="case-list-container" class="grid gap-3 sm:gap-4">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA: CREAR CASO -->
+        <div id="view-create-case" class="view hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                <button onclick="showView('dashboard')" class="mb-6 text-[#6ddbf3] font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i> Volver a Casos
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">Nuevo Caso</h2>
+                <form id="form-create-case" class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">Etiqueta de Referencia (NO NOMBRES)</label>
+                        <input type="text" name="case_title" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:border-[#6ddbf3]" placeholder="Ej. Caso A (Baja participación)">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 ml-1">ID de Caso (Automático)</label>
+                        <input type="text" name="case_id" id="next-case-id" readonly class="w-full px-4 py-3 rounded-xl bg-slate-100 border border-slate-200 outline-none text-slate-500 cursor-not-allowed font-mono">
+                    </div>
+                    <button type="submit" class="submit-btn w-full py-4 bg-[#6ddbf3] text-white font-bold rounded-xl shadow-lg mt-4">Crear Caso</button>
+                    <p class="mt-4 text-[9px] text-slate-400 text-center leading-tight italic">La información registrada respeta la confidencialidad y evita el uso de datos personales identificables.</p>
+                </form>
+            </div>
+        </div>
+
+        <!-- VISTA: ADMIN DASHBOARD -->
+        <div id="view-admin" class="view hidden">
+            <div class="bg-white p-4 sm:p-10 rounded-2xl shadow-xl border-t-8 border-slate-800">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                    <div>
+                        <button id="admin-back-btn" onclick="renderPractitionerList()" class="hidden mb-2 text-[#6ddbf3] font-bold text-sm flex items-center gap-2">
+                            <i class="fas fa-chevron-left"></i> Volver a la lista
+                        </button>
+                        <h2 class="text-2xl font-bold text-slate-800">Panel de Administración</h2>
+                        <p id="admin-subtitle" class="text-slate-500 text-sm italic">Selecciona un practicante para revisar.</p>
+                    </div>
+                    <button onclick="loadEvidences()" class="w-10 h-10 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-full transition text-slate-600">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <!-- Resumen de Estadísticas para el Director -->
+                <div id="admin-stats" class="grid grid-cols-3 gap-4 mb-8 hidden">
+                    <div class="bg-red-50 p-3 sm:p-4 rounded-2xl border border-red-100 text-center">
+                        <span class="block text-[8px] sm:text-[10px] font-bold text-red-400 uppercase">Urgentes</span>
+                        <span id="stat-red" class="text-xl sm:text-2xl font-black text-red-600">0</span>
+                    </div>
+                    <div class="bg-amber-50 p-3 sm:p-4 rounded-2xl border border-amber-100 text-center">
+                        <span class="block text-[8px] sm:text-[10px] font-bold text-amber-500 uppercase">Riesgo</span>
+                        <span id="stat-yellow" class="text-xl sm:text-2xl font-black text-amber-600">0</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100 text-center">
+                        <span class="block text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase">Total</span>
+                        <span id="stat-total" class="text-xl sm:text-2xl font-black text-slate-800">0</span>
+                    </div>
+                </div>
+
+                <div id="admin-search-container" class="relative mb-6 hidden">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="admin-search" oninput="filterAdminContent()" placeholder="Buscar caso por ID o practicante..." 
+                        class="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-slate-200 transition-all">
+                </div>
+
+                <div id="admin-content" class="space-y-4">
+                    <!-- Contenido dinámico: Lista de practicantes o Lista de evidencias -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA: EXPEDIENTE DEL CASO (Sesiones e Historial) -->
+        <div id="view-case-folder" class="view hidden space-y-8">
+            <button onclick="showView('dashboard')" class="text-[#6ddbf3] font-bold text-sm flex items-center gap-2">
+                <i class="fas fa-chevron-left"></i> Volver a Casos
+            </button>
+
+            <div id="case-header-info" class="bg-white p-5 sm:p-6 rounded-3xl shadow-lg border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <!-- Dinámico -->
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+                <div class="bg-[#6ddbf3] p-5 sm:p-6 text-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-black italic tracking-tight uppercase">Nueva Sesión</h2>
+                        <p class="text-white/80 text-xs">Registrar avance clínico actual</p>
+                    </div>
+                    <i class="fas fa-notes-medical text-2xl opacity-50"></i>
+                </div>
+
+                <div class="p-6">
+                    <div id="evidence-msg" class="hidden mb-6 p-4 rounded-xl text-sm text-center font-medium"></div>
+                    <form id="form-evidence" class="space-y-6">
+                        <input type="hidden" name="case_id" id="hidden-case-id">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-1">Tipo de Intervención</label>
+                                <select name="tipo_intervencion" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:border-[#6ddbf3] outline-none transition-all appearance-none">
+                                    <option>Individual</option>
+                                    <option>Grupal / Taller</option>
+                                    <option>Canalización Externa</option>
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-1">Prioridad (Semáforo)</label>
+                                <input type="hidden" name="semaforo" id="semaforo-value" value="Verde">
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button type="button" onclick="setSemaforo('Verde', this)" class="semaforo-btn py-3 rounded-xl border-2 border-slate-800 bg-emerald-500 text-white text-[10px] font-black uppercase">Estable</button>
+                                    <button type="button" onclick="setSemaforo('Amarillo', this)" class="semaforo-btn py-3 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-400 text-[10px] font-black uppercase">Riesgo</button>
+                                    <button type="button" onclick="setSemaforo('Rojo', this)" class="semaforo-btn py-3 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-400 text-[10px] font-black uppercase">Urgente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-1">Notas del Avance</label>
+                                <span id="char-count" class="text-[9px] sm:text-[10px] font-bold text-slate-400 mr-1">0 / 200 mín.</span>
+                            </div>
+                            <textarea id="session-notes" name="notas" required rows="5" oninput="updateCharCount()" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none text-sm leading-relaxed focus:border-[#6ddbf3] transition-all" placeholder="Describe detalladamente los avances..."></textarea>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <input type="checkbox" id="consent" required class="w-5 h-5 accent-[#6ddbf3] mt-1">
+                            <label for="consent" class="text-[10px] text-slate-500 leading-tight">Confirmo que el expediente físico cuenta con el Consentimiento Informado.</label>
+                        </div>
+
+                        <button id="btn-submit-evidence" type="submit" disabled class="submit-btn w-full py-4 rounded-2xl font-bold text-white bg-slate-300 cursor-not-allowed transition-all shadow-xl">
+                            Finalizar Sesión
+                        </button>
+                        <p class="text-[9px] text-slate-400 text-center italic mt-2">La información registrada respeta la confidencialidad de los casos.</p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 ml-2 italic">Línea de Tiempo de Intervenciones</h3>
+                <div id="case-history-container" class="space-y-4">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // REEMPLAZA CON TU URL DE APPS SCRIPT
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
+
+        let allCases = []; 
+        let allEvidences = [];
+
+        // PERSISTENCIA LOCAL Y OFFLINE SYNC
+        document.addEventListener('DOMContentLoaded', () => {
+            // Persistencia de Sesión: Si ya está logueado, ir al dashboard
+            const practitioner = localStorage.getItem('practitioner_name');
+            const role = localStorage.getItem('user_role');
+            if (practitioner) {
+                if (role === 'admin') {
+                    showView('admin');
+                    loadEvidences();
+                } else {
+                    loadInitialCaseData();
+                }
+            }
+
+            // Recuperar borrador
+            const savedDraft = localStorage.getItem('conecta_evidence_draft');
+            if (savedDraft) {
+                const data = JSON.parse(savedDraft);
+                const form = document.getElementById('form-evidence');
+                Object.keys(data).forEach(key => {
+                    if (form[key]) form[key].value = data[key];
+                });
+                if (data.semaforo) {
+                    const btn = Array.from(document.querySelectorAll('.semaforo-btn')).find(b => b.innerText.includes(data.semaforo));
+                    if (btn) setSemaforo(data.semaforo, btn);
+                }
+            }
+
+            // Sincronización automática
+            window.addEventListener('online', async () => {
+                const pending = JSON.parse(localStorage.getItem('conecta_pending_submissions') || '[]');
+                if (pending.length > 0) {
+                    for (const item of pending) {
+                        try {
+                            await fetch(GAS_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(item) });
+                        } catch (e) { break; }
+                    }
+                    localStorage.removeItem('conecta_pending_submissions');
+                    const msgDiv = document.getElementById('evidence-msg');
+                    if (msgDiv) {
+                        msgDiv.textContent = 'Conexión recuperada: Se han enviado los registros pendientes.';
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-emerald-50 text-emerald-600 border border-emerald-100 block";
+                        setTimeout(() => msgDiv.classList.add('hidden'), 5000);
+                    }
+                }
+            });
+        });
+
+        // Guardar borrador al escribir en el expediente
+        document.addEventListener('input', (e) => {
+            if (e.target.closest('#form-evidence')) {
+                const formData = new FormData(document.getElementById('form-evidence'));
+                const data = Object.fromEntries(formData.entries());
+                localStorage.setItem('conecta_evidence_draft', JSON.stringify(data));
+            }
+        });
+
+        async function loadInitialCaseData() {
+            showView('dashboard');
+            const content = document.getElementById('case-list-container');
+            content.innerHTML = `<p class="text-center py-12 text-slate-400 italic animate-pulse">Cargando directorio de casos...</p>`;
+            
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'get_practitioner_data' })
+                });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    allCases = (result.cases || []).map(c => ({...c, case_id: String(c.case_id)}));
+                    allEvidences = (result.evidences || []).map(e => ({...e, case_id: String(e.case_id)}));
+                    renderCaseList();
+                } else {
+                    throw new Error(result.message || 'Error en la respuesta del servidor');
+                }
+            } catch (e) {
+                console.error("Fetch Error:", e);
+                content.innerHTML = `<p class="text-center py-12 text-red-400">Error al conectar con el servidor: ${e.message}</p>`;
+            }
+        }
+
+        function renderCaseList(filtered = allCases) {
+            const container = document.getElementById('case-list-container');
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-center py-10 text-slate-400">No hay casos registrados aún.</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(c => `
+                <div onclick="openCaseFolder('${c.case_id}')" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-50 flex justify-between items-center hover:border-[#6ddbf3] hover:shadow-md transition cursor-pointer group">
+                    <div class="flex-1 min-w-0 pr-4">
+                        <h4 class="font-bold text-slate-800 group-hover:text-[#6ddbf3] break-words">Caso: ${c.case_id} ${c.case_title ? `(${c.case_title})` : ''}</h4>
+                        <p class="text-xs text-slate-400 truncate">Creado por: ${c.practitioner_creator}</p>
+                    </div>
+                    <div class="flex items-center gap-3 flex-shrink-0">
+                        <span class="text-[10px] bg-slate-50 px-2 py-1 rounded-full text-slate-400 font-bold">
+                            ${allEvidences.filter(e => e.case_id === c.case_id).length} Sesiones
+                        </span>
+                        <i onclick="openCaseFolder('${c.case_id}')" class="fas fa-chevron-right text-slate-200 group-hover:text-[#6ddbf3] transition cursor-pointer"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCases() {
+            const term = document.getElementById('case-search').value.toLowerCase();
+            const filtered = allCases.filter(c => 
+                String(c.case_id).toLowerCase().includes(term) || (c.case_title && c.case_title.toLowerCase().includes(term))
+            );
+            renderCaseList(filtered);
+        }
+
+        function openCaseFolder(id) {
+            const selectedCase = allCases.find(c => String(c.case_id) === String(id));
+            if (!selectedCase) return;
+
+            showView('case-folder');
+            document.getElementById('hidden-case-id').value = id;
+            
+            // Render Header Info
+            document.getElementById('case-header-info').innerHTML = `
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Caso: ${selectedCase.case_id} ${selectedCase.case_title ? `(${selectedCase.case_title})` : ''}</h3>
+                    <p class="text-xs text-slate-500 font-medium tracking-tight">Responsable: ${selectedCase.practitioner_creator} • Inicio: ${selectedCase.creation_date}</p>
+                </div>
+                <div class="text-right">
+                    <span class="block text-[10px] font-bold text-slate-300 uppercase">Estado General</span>
+                    <span class="text-xs font-bold text-[#6ddbf3]">Acompañamiento Activo</span>
+                </div>
+            `;
+
+            // Render Timeline
+            renderCaseTimeline(id);
+            window.scrollTo(0, 0);
+        }
+
+        function renderCaseTimeline(case_id) {
+            const container = document.getElementById('case-history-container');
+            const history = allEvidences.filter(e => String(e.case_id) === String(case_id));
+            
+            if (history.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-slate-400 text-sm">Este caso no tiene intervenciones previas.</div>`;
+                return;
+            }
+
+            container.innerHTML = history.sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).map(ev => {
+                const colors = { 'Verde': 'bg-emerald-500', 'Amarillo': 'bg-amber-400', 'Rojo': 'bg-red-500' };
+                return `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
+                        <div class="flex flex-col items-center flex-shrink-0">
+                            <div class="w-3 h-3 rounded-full ${colors[ev.semaforo] || 'bg-slate-300'}"></div>
+                            <div class="w-px flex-1 bg-slate-100 mt-2"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${ev.fecha} • ${ev.tipo_intervencion}</span>
+                                <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-500">${ev.practicante}</span>
+                            </div>
+                            <p class="text-sm text-slate-600 leading-relaxed italic break-words whitespace-pre-wrap">"${ev.notas}"</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Manejo de Vistas
+        function showView(viewName) {
+            // Si vamos a registrar un alumno, generamos el ID automáticamente
+            if (viewName === 'create-case') {
+                let nextId = "001";
+                if (allCases.length > 0) {
+                    // Buscamos el ID más alto, lo convertimos a número y sumamos 1
+                    const ids = allCases.map(c => parseInt(c.case_id)).filter(id => !isNaN(id));
+                    if (ids.length > 0) {
+                        const maxId = Math.max(...ids);
+                        nextId = String(maxId + 1).padStart(3, '0');
+                    }
+                }
+                document.getElementById('next-case-id').value = nextId;
+            }
+
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.remove('active');
+                v.classList.add('hidden');
+            });
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            
+            const navActions = document.getElementById('nav-actions');
+            if (viewName !== 'login') {
+                const name = localStorage.getItem('practitioner_name') || '';
+                navActions.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm font-medium text-slate-600 hidden sm:block">
+                            Hola, <span class="text-slate-900 font-bold">${name}</span>
+                        </span>
+                        <button onclick="logout()" class="text-sm font-medium text-slate-500 hover:text-red-500 transition">
+                            Cerrar Sesión
+                        </button>
+                    </div>`;
+            } else {
+                navActions.innerHTML = '';
+            }
+        }
+
+        // Función de Logout para limpiar storage
+        function logout() {
+            localStorage.removeItem('practitioner_name');
+            localStorage.removeItem('user_role');
+            location.reload();
+        }
+
+        // Lógica del Semáforo
+        function setSemaforo(value, element) {
+            document.getElementById('semaforo-value').value = value;
+            
+            // Resetear estilos de todos los botones
+            document.querySelectorAll('.semaforo-btn').forEach(btn => {
+                btn.classList.remove('border-slate-800', 'shadow-inner', 'bg-emerald-500', 'bg-amber-400', 'bg-red-500', 'text-white');
+                btn.classList.add('border-slate-100', 'bg-slate-50', 'text-slate-400');
+            });
+
+            // Aplicar estilo al seleccionado
+            element.classList.remove('border-slate-100', 'bg-slate-50', 'text-slate-400');
+            element.classList.add('border-slate-800', 'shadow-inner', 'text-white');
+            
+            if (value === 'Verde') element.classList.add('bg-emerald-500');
+            if (value === 'Amarillo') element.classList.add('bg-amber-400');
+            if (value === 'Rojo') element.classList.add('bg-red-500');
+        }
+
+        // Cargar Evidencias (Solo Admin)
+        async function loadEvidences() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `<div class="py-12 text-center text-slate-400 italic"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando datos del servidor...</div>`;
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'get_evidences' })
+                });
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    // Normalizamos los IDs a String para que las comparaciones no fallen
+                    allEvidences = (result.data || []).map(ev => ({...ev, case_id: String(ev.case_id)}));
+                    renderPractitionerList();
+                } else {
+                    content.innerHTML = `<div class="py-12 text-center text-red-500">Error: ${result.message}</div>`;
+                }
+            } catch (error) {
+                content.innerHTML = `<div class="py-12 text-center text-red-500">Error de conexión con el servidor.</div>`;
+            }
+        }
+
+        function renderPractitionerList() {
+            const content = document.getElementById('admin-content');
+            const subtitle = document.getElementById('admin-subtitle');
+            const backBtn = document.getElementById('admin-back-btn');
+            const statsDiv = document.getElementById('admin-stats');
+            const searchContainer = document.getElementById('admin-search-container');
+            
+            subtitle.textContent = "Selecciona un practicante para revisar.";
+            backBtn.classList.add('hidden');
+            backBtn.setAttribute('onclick', 'renderPractitionerList()');
+            statsDiv.classList.remove('hidden');
+            searchContainer.classList.remove('hidden');
+
+            if (allEvidences.length === 0) {
+                content.innerHTML = `<p class="text-center py-10 text-slate-400">No hay evidencias registradas aún.</p>`;
+                statsDiv.classList.add('hidden');
+                return;
+            }
+
+            // Calcular estadísticas globales
+            const redCount = allEvidences.filter(e => e.semaforo === 'Rojo').length;
+            const yellowCount = allEvidences.filter(e => e.semaforo === 'Amarillo').length;
+            
+            document.getElementById('stat-red').textContent = redCount;
+            document.getElementById('stat-yellow').textContent = yellowCount;
+            document.getElementById('stat-total').textContent = allEvidences.length;
+
+            // Obtener lista única de practicantes
+            const practitioners = [...new Set(allEvidences.map(ev => ev.practicante))];
+            
+            let html = `<div class="grid gap-3">`;
+            practitioners.forEach(name => {
+                const pEvidences = allEvidences.filter(ev => ev.practicante === name);
+                const pRed = pEvidences.filter(e => e.semaforo === 'Rojo').length;
+                const pYellow = pEvidences.filter(e => e.semaforo === 'Amarillo').length;
+
+                html += `
+                    <button onclick="renderAdminPractitionerCases('${name}')" class="flex justify-between items-center p-5 bg-slate-50 border border-slate-100 rounded-xl hover:border-[#6ddbf3] hover:bg-white transition group text-left">
+                        <div>
+                            <h4 class="font-bold text-slate-800">${name}</h4>
+                            <p class="text-xs text-slate-500">${pEvidences.length} evidencias registradas</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-1">
+                                ${pRed > 0 ? `<span class="w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">${pRed}</span>` : ''}
+                                ${pYellow > 0 ? `<span class="w-5 h-5 flex items-center justify-center bg-amber-400 text-white text-[10px] font-bold rounded-full">${pYellow}</span>` : ''}
+                            </div>
+                            <i class="fas fa-chevron-right text-slate-300 group-hover:text-[#6ddbf3] transition"></i>
+                        </div>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+
+        function filterAdminContent() {
+            const term = document.getElementById('admin-search').value.toLowerCase();
+            if (!term) {
+                renderPractitionerList();
+                return;
+            }
+            
+            const filtered = allEvidences.filter(ev => 
+                String(ev.case_id).toLowerCase().includes(term) || 
+                ev.practicante.toLowerCase().includes(term)
+            );
+            
+            renderGlobalEvidenceCards(filtered, `Resultados para: "${term}"`);
+        }
+
+        function renderGlobalEvidenceCards(evidences, title) {
+            const content = document.getElementById('admin-content');
+            const subtitle = document.getElementById('admin-subtitle');
+            const backBtn = document.getElementById('admin-back-btn');
+            
+            subtitle.textContent = title;
+            backBtn.classList.remove('hidden');
+            backBtn.setAttribute('onclick', 'renderPractitionerList()');
+            document.getElementById('admin-stats').classList.add('hidden');
+
+            renderCardsHtml(evidences);
+        }
+
+        function renderAdminPractitionerCases(practitionerName) {
+            const content = document.getElementById('admin-content');
+            const subtitle = document.getElementById('admin-subtitle');
+            const backBtn = document.getElementById('admin-back-btn');
+            const statsDiv = document.getElementById('admin-stats');
+            const searchContainer = document.getElementById('admin-search-container');
+            
+            subtitle.textContent = `Casos atendidos por ${practitionerName}`;
+            backBtn.classList.remove('hidden');
+            backBtn.setAttribute('onclick', 'renderPractitionerList()');
+            statsDiv.classList.add('hidden');
+            searchContainer.classList.add('hidden');
+
+            const pEvidences = allEvidences.filter(ev => String(ev.practicante) === String(practitionerName));
+            const uniqueCaseIds = [...new Set(pEvidences.map(ev => String(ev.case_id)))];
+
+            if (uniqueCaseIds.length === 0) {
+                content.innerHTML = `<p class="text-center py-10 text-slate-400">No hay casos registrados para este practicante.</p>`;
+                return;
+            }
+
+            let html = `<div class="grid gap-3">`;
+            uniqueCaseIds.forEach(caseId => {
+                const caseEvidences = pEvidences.filter(e => e.case_id === caseId);
+                const red = caseEvidences.filter(e => e.semaforo === 'Rojo').length;
+                const yellow = caseEvidences.filter(e => e.semaforo === 'Amarillo').length;
+                
+                html += `
+                    <button onclick="renderAdminCaseSessions('${caseId}', '${practitionerName}')" class="flex justify-between items-center p-5 bg-slate-50 border border-slate-100 rounded-xl hover:border-[#6ddbf3] hover:bg-white transition group text-left">
+                        <div class="flex-1 min-w-0 pr-4">
+                            <h4 class="font-bold text-slate-800 break-words">Caso: ${caseId}</h4>
+                            <p class="text-xs text-slate-500">${caseEvidences.length} sesiones registradas</p>
+                        </div>
+                        <div class="flex items-center gap-3 flex-shrink-0">
+                            <div class="flex gap-1">
+                                ${red > 0 ? `<span class="w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">${red}</span>` : ''}
+                                ${yellow > 0 ? `<span class="w-5 h-5 flex items-center justify-center bg-amber-400 text-white text-[10px] font-bold rounded-full">${yellow}</span>` : ''}
+                            </div>
+                            <i class="fas fa-chevron-right text-slate-300 group-hover:text-[#6ddbf3] transition"></i>
+                        </div>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+
+        function renderAdminCaseSessions(caseId, practitionerName) {
+            const subtitle = document.getElementById('admin-subtitle');
+            const backBtn = document.getElementById('admin-back-btn');
+            const content = document.getElementById('admin-content');
+            
+            subtitle.textContent = `Sesiones del Caso ${caseId} (${practitionerName})`;
+            backBtn.setAttribute('onclick', `renderAdminPractitionerCases('${practitionerName}')`);
+
+            // Forzamos comparación de strings para evitar errores de tipo (Número vs Texto)
+            const filtered = allEvidences.filter(ev => String(ev.case_id) === String(caseId) && String(ev.practicante) === String(practitionerName));
+            
+            if (filtered.length === 0) {
+                content.innerHTML = `<p class="text-center py-12 text-slate-400 italic">No se encontraron sesiones para este filtro.</p>`;
+            } else {
+                renderCardsHtml(filtered, practitionerName);
+            }
+        }
+
+        function renderCardsHtml(evidences, pName = "") {
+            const content = document.getElementById('admin-content');
+            const reviewedItems = JSON.parse(localStorage.getItem('admin_reviewed_items') || '[]');
+
+            let html = `<div class="space-y-6">`;
+            evidences.forEach((ev, index) => {
+                const semaforoColors = { 'Verde': 'bg-emerald-500', 'Amarillo': 'bg-amber-400', 'Rojo': 'bg-red-500' };
+                const itemId = `${ev.practicante}-${ev.fecha}-${ev.case_id}-${index}`;
+                const isReviewed = reviewedItems.includes(itemId);
+
+                html += `
+                    <div class="p-5 rounded-xl border ${isReviewed ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-100 shadow-md'} transition relative">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-[10px] font-black uppercase text-slate-400 block mb-1">Fecha: ${ev.fecha}</span>
+                                ${!pName ? `<span class="text-[10px] font-bold text-[#6ddbf3] block mb-1">Por: ${ev.practicante}</span>` : ''}
+                                <h4 class="font-bold text-slate-800">Caso: ${ev.case_id}</h4>
+                                <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold text-white ${semaforoColors[ev.semaforo] || 'bg-slate-400'}">
+                                    ${ev.semaforo}
+                                </span>
+                            </div>
+                            <button onclick="toggleReview('${itemId}', this)" class="w-10 h-10 rounded-full border-2 flex items-center justify-center transition ${isReviewed ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-100 text-slate-200 hover:border-emerald-200 hover:text-emerald-300'}">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Intervención: ${ev.tipo_intervencion}</p>
+                            <p class="text-sm text-slate-600 leading-relaxed break-words whitespace-pre-wrap">${ev.notas}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+
+        function updateCharCount() {
+            const textarea = document.getElementById('session-notes');
+            const countSpan = document.getElementById('char-count');
+            const btn = document.getElementById('btn-submit-evidence');
+            const consent = document.getElementById('consent').checked;
+            
+            const count = textarea.value.length;
+            const minRequired = 200;
+            
+            countSpan.textContent = `${count} / ${minRequired} min`;
+            
+            if (count < minRequired) {
+                countSpan.classList.add('text-amber-500');
+                countSpan.classList.remove('text-emerald-500');
+                btn.disabled = true;
+                btn.classList.add('bg-slate-300', 'cursor-not-allowed');
+                btn.classList.remove('bg-[#6ddbf3]', 'hover:opacity-90');
+            } else {
+                countSpan.classList.remove('text-amber-500');
+                countSpan.classList.add('text-emerald-500');
+                if (consent) {
+                    btn.disabled = false;
+                    btn.classList.remove('bg-slate-300', 'cursor-not-allowed');
+                    btn.classList.add('bg-[#6ddbf3]', 'hover:opacity-90');
+                }
+            }
+        }
+
+        function exportToCSV() {
+            if (allEvidences.length === 0) return;
+            let csv = "Fecha,Practicante,ID Caso,Tipo,Semaforo,Notas\n";
+            allEvidences.forEach(ev => {
+                csv += `"${ev.fecha}","${ev.practicante}","${ev.case_id}","${ev.tipo_intervencion}","${ev.semaforo}","${ev.notas.replace(/"/g, '""')}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", `conecta_reporte_${new Date().toLocaleDateString()}.csv`);
+            link.click();
+        }
+
+        function toggleReview(id, btn) {
+            let reviewedItems = JSON.parse(localStorage.getItem('admin_reviewed_items') || '[]');
+            const index = reviewedItems.indexOf(id);
+            
+            if (index > -1) {
+                reviewedItems.splice(index, 1);
+                btn.className = "w-10 h-10 rounded-full border-2 flex items-center justify-center transition border-slate-100 text-slate-200 hover:border-emerald-200 hover:text-emerald-300";
+            } else {
+                reviewedItems.push(id);
+                btn.className = "w-10 h-10 rounded-full border-2 flex items-center justify-center transition bg-emerald-500 border-emerald-500 text-white";
+            }
+            
+            localStorage.setItem('admin_reviewed_items', JSON.stringify(reviewedItems));
+        }
+
+        // Función Genérica para Enviar Datos
+        async function sendToGAS(action, data, formElement) {
+            const submitBtn = formElement.querySelector('.submit-btn');
+            const originalText = submitBtn.innerText;
+            const msgDiv = action === 'login' ? document.getElementById('login-msg') : document.getElementById('evidence-msg');
+            
+            // Estado de carga
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Procesando...`;
+            if (msgDiv) msgDiv.classList.add('hidden');
+
+            try {
+                // Lógica de acceso especial para Admin Andriy
+                if (action === 'login' && data.nombre.toLowerCase() === 'andriy' && data.password === '09170') {
+                    localStorage.setItem('user_role', 'admin');
+                    localStorage.setItem('practitioner_name', 'Andriy (Admin)');
+                    if (msgDiv) {
+                        msgDiv.textContent = '¡Bienvenido Andriy! Accediendo al panel de control...';
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-slate-800 text-white block";
+                        msgDiv.classList.remove('hidden');
+                    }
+                    setTimeout(() => {
+                        showView('admin');
+                        loadEvidences();
+                        if (msgDiv) msgDiv.classList.add('hidden');
+                    }, 1500);
+                    return;
+                }
+
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action, data })
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    if (msgDiv) {
+                        let successMsg = '¡Operación exitosa!';
+                        if (action === 'update_student') successMsg = '¡Información actualizada con éxito!';
+                        if (action === 'login') successMsg = `¡Bienvenido(a), ${data.nombre}! Iniciando sesión...`;
+                        if (action === 'register_student') successMsg = '¡Expediente de alumno creado con éxito!';
+                        if (action === 'create_case') successMsg = '¡Caso creado con éxito!';
+                        if (action === 'evidence') successMsg = '¡Sesión guardada en el historial!';
+                        
+                        msgDiv.textContent = successMsg;
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-emerald-50 text-emerald-600 border border-emerald-100 block";
+                        msgDiv.classList.remove('hidden');
+                    }
+                    
+                    formElement.reset();
+                    
+                    if (action === 'evidence') {
+                        localStorage.removeItem('conecta_evidence_draft');
+                        const btn = document.getElementById('btn-submit-evidence');
+                        if (btn) {
+                            btn.disabled = true;
+                            btn.classList.add('bg-slate-300', 'cursor-not-allowed');
+                            btn.classList.remove('bg-[#6ddbf3]', 'hover:opacity-90');
+                        }
+                        loadInitialCaseData(); 
+                        setTimeout(() => { if (msgDiv) msgDiv.classList.add('hidden'); }, 4000);
+                    }
+                    
+                    if (action === 'create_case') {
+                        setTimeout(() => {
+                            showView('dashboard');
+                            loadInitialCaseData();
+                            if (msgDiv) msgDiv.classList.add('hidden');
+                        }, 1500);
+                    }
+
+                    if (action === 'login') {
+                        localStorage.setItem('practitioner_name', data.nombre);
+                        localStorage.setItem('user_role', 'practitioner');
+                        setTimeout(() => {
+                            // Llamamos a la carga de datos inmediatamente para ganar tiempo
+                            loadInitialCaseData();
+                            if (msgDiv) msgDiv.classList.add('hidden');
+                        }, 1500);
+                    }
+                } else {
+                    if (msgDiv) {
+                        msgDiv.textContent = 'Error: ' + (result.message || 'Credenciales incorrectas');
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-red-50 text-red-600 border border-red-100 block animate-pulse";
+                        msgDiv.classList.remove('hidden');
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                if (!navigator.onLine) {
+                    const pending = JSON.parse(localStorage.getItem('conecta_pending_submissions') || '[]');
+                    pending.push({ action, data });
+                    localStorage.setItem('conecta_pending_submissions', JSON.stringify(pending));
+                    if (msgDiv) {
+                        msgDiv.textContent = 'Estás offline. Datos guardados localmente; se enviarán al recuperar conexión.';
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-amber-50 text-amber-600 border border-amber-100 block";
+                        msgDiv.classList.remove('hidden');
+                    }
+                    formElement.reset();
+                    localStorage.removeItem('conecta_evidence_draft');
+                } else {
+                    if (msgDiv) {
+                        msgDiv.textContent = 'Error de conexión. Revisa tu internet.';
+                        msgDiv.className = "mb-6 p-4 rounded-xl text-sm text-center font-medium bg-red-50 text-red-600 border border-red-100 block";
+                        msgDiv.classList.remove('hidden');
+                    }
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        }
+
+        // ACTIVAR BOTÓN SEGÚN CONSENTIMIENTO
+        document.getElementById('consent').addEventListener('change', function() {
+            updateCharCount(); // Delegamos la lógica al validador de caracteres
+        });
+
+        // Evento Login
+        document.getElementById('form-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            sendToGAS('login', data, this);
+        });
+
+        document.getElementById('form-create-case').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            data.practitioner_creator = localStorage.getItem('practitioner_name');
+            sendToGAS('create_case', data, this);
+        });
+
+        // Evento Evidencias
+        document.getElementById('form-evidence').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Aseguramos que el nombre del practicante vaya en el envío
+            data.practicante = localStorage.getItem('practitioner_name') || "Anonimo";
+            data.consentimiento = document.getElementById('consent').checked;
+            data.case_id = document.getElementById('hidden-case-id').value;
+            
+            // Capturar la fecha local en formato YYYY-MM-DD para evitar el desfase UTC
+            const d = new Date();
+            data.fecha = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            
+            sendToGAS('evidence', data, this);
+        });
+    </script>
+</body>
+</html>

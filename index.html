@@ -31,14 +31,14 @@
             left: 0;
             width: 0;
             height: 2px;
-            background-color: #14b8a6;
+            background-color: #6ddbf3;
             transition: width 0.3s ease;
         }
         .nav-link:hover::after {
             width: 100%;
         }
         .nav-link:hover {
-            color: #14b8a6;
+            color: #6ddbf3;
         }
         .chart-container {
             position: relative;
@@ -59,15 +59,15 @@
             }
         }
         .btn-primary {
-            background-color: #14b8a6;
+            background-color: #6ddbf3;
             transition: background-color 0.3s;
             min-height: 48px;
         }
         .btn-primary:active {
-            background-color: #0d9488;
+            opacity: 0.9;
         }
         .btn-primary:hover {
-            background-color: #0d9488;
+            opacity: 0.9;
         }
         .card {
             background-color: #ffffff;
@@ -84,17 +84,18 @@
 </head>
 <body>
 
-    <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-lg border-b border-teal-600/10">
+    <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-lg border-b border-[#6ddbf3]/20">
         <nav class="container mx-auto px-4 sm:px-6 py-4">
             <div class="flex items-center justify-between">
                 <a href="#" class="text-2xl sm:text-3xl font-extrabold text-gray-800 flex items-center group">
-                    Conecta<span class="text-teal-600 group-hover:text-teal-500 transition">+</span>
+                    Conecta<span class="text-[#6ddbf3] transition">+</span>
                 </a>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#about" class="nav-link font-medium text-sm">El Piloto</a>
+                    <a href="#about" class="nav-link font-medium text-sm">El Programa</a>
                     <a href="#proceso" class="nav-link font-medium text-sm">¿Cómo funciona?</a>
                     <a href="#equipo" class="nav-link font-medium text-sm">Equipo</a>
-                    <a href="#contacto" class="bg-teal-600 text-white px-5 py-2 rounded-full hover:bg-teal-700 transition text-sm">Solicitar Visita</a>
+                    <a href="plataforma.html" class="nav-link font-medium text-sm text-[#6ddbf3] font-bold">Portal Practicantes</a>
+                    <a href="#contacto" class="bg-[#6ddbf3] text-white px-5 py-2 rounded-full hover:opacity-90 transition text-sm font-bold">Solicitar Visita</a>
                 </div>
                 <div class="md:hidden">
                     <button id="menu-btn" class="text-gray-600 focus:outline-none p-2">
@@ -102,27 +103,28 @@
                     </button>
                 </div>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden mt-3 flex flex-col items-center space-y-2 bg-white rounded-lg shadow-lg py-3 mb-2">
-                <a href="#about" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-teal-50 rounded">El Piloto</a>
+            <div id="mobile-menu" class="hidden md:hidden mt-3 flex flex-col items-center space-y-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl py-4 mb-2 border border-[#6ddbf3]/10">
+                <a href="#about" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-teal-50 rounded">El Programa</a>
                 <a href="#proceso" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-teal-50 rounded">¿Cómo funciona?</a>
                 <a href="#equipo" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-teal-50 rounded">Equipo</a>
-                <a href="#contacto" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-teal-50 rounded italic">Implementar Piloto</a>
+                <a href="plataforma.html" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-[#6ddbf3]/10 rounded text-[#6ddbf3] font-bold">Portal Practicantes</a>
+                <a href="#contacto" class="nav-link font-medium w-full text-center py-2 text-sm hover:bg-[#6ddbf3]/10 rounded italic">Implementar Programa</a>
             </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <section id="hero" class="hero-gradient relative py-12 sm:py-24 md:py-32 rounded-2xl sm:rounded-3xl my-4 sm:my-8 px-5 sm:px-12 overflow-hidden">
+        <section id="hero" class="hero-gradient relative py-10 sm:py-24 md:py-32 rounded-2xl sm:rounded-3xl my-2 sm:my-8 px-5 sm:px-12 overflow-hidden">
             <div class="relative z-10 text-center md:text-left">
                 <h1 id="hero-title" class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-gray-800 mb-4 sm:mb-6 leading-tight tracking-tight">
-                    Apoyo psicológico directo para alumnos — <span class="text-teal-600">dentro de tu escuela.</span>
+                    Apoyo psicológico directo para alumnos — <span class="text-[#6ddbf3]">dentro de tu escuela.</span>
                 </h1>
                 <p id="hero-subtitle" class="text-sm sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0 mb-8 sm:mb-10 leading-relaxed">
-                    Programa piloto gratuito para detectar, acompañar y canalizar casos emocionales antes de que se conviertan en crisis. Sin carga administrativa para la escuela.
+                    Programa integral gratuito para detectar, acompañar y canalizar casos emocionales antes de que se conviertan en crisis. Sin carga administrativa para la escuela.
                 </p>
                 <div id="hero-btns" class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-                    <a href="#contacto" class="btn-primary text-white font-bold py-4 px-10 rounded-full text-base sm:text-lg inline-flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg shadow-teal-200">
-                        Quiero implementar el piloto
+                    <a href="#contacto" class="btn-primary text-white font-bold py-4 px-10 rounded-full text-base sm:text-lg inline-flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg shadow-[#6ddbf3]/30">
+                        Implementar en mi escuela
                     </a>
                     <a href="#seguridad" class="border-2 border-slate-300 text-slate-600 font-semibold py-4 px-8 rounded-full text-base sm:text-lg inline-flex items-center gap-2 hover:bg-slate-50 transition w-full sm:w-auto justify-center">
                         <i class="fas fa-shield-halved"></i> Seguridad y Protocolo
@@ -162,15 +164,15 @@
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 px-2">
-                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-teal-500">
+                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-[#6ddbf3]">
                         <h3 class="text-xl font-bold text-gray-800 mb-4 tracking-tight leading-none">Detección<br>Temprana</h3>
                         <p class="text-sm text-gray-600 leading-relaxed">Identificamos señales de riesgo antes de que se conviertan en crisis académicas o personales.</p>
                     </div>
-                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-teal-500">
+                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-[#6ddbf3]">
                         <h3 class="text-xl font-bold text-gray-800 mb-4 tracking-tight leading-none">Prevención<br>Activa</h3>
                         <p class="text-sm text-gray-600 leading-relaxed">Acompañamiento enfocado en herramientas de regulación emocional para el día a día.</p>
                     </div>
-                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-teal-500">
+                    <div class="card p-6 sm:p-8 feature-card text-left border-b-4 border-[#6ddbf3]">
                         <h3 class="text-xl font-bold text-gray-800 mb-4 tracking-tight leading-none">Canalización<br>Responsable</h3>
                         <p class="text-sm text-gray-600 leading-relaxed">Clasificamos la gravedad de los casos y derivamos situaciones críticas a especialistas externos.</p>
                     </div>
@@ -179,35 +181,35 @@
 
         <section id="proceso" class="py-12 sm:py-20 bg-white">
             <div class="max-w-4xl mx-auto px-4">
-                <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4">Ejecución del Piloto</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4">Implementación del Programa</h2>
                 <p class="text-center text-slate-500 mb-12 text-sm italic">Diseñado para no interrumpir la operación escolar.</p>
                 <div class="space-y-8 relative">
-                    <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-teal-100 -translate-x-1/2 hidden md:block"></div>
+                    <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-[#6ddbf3]/20 -translate-x-1/2 hidden md:block"></div>
                     
                     <div class="relative flex flex-col md:flex-row items-center gap-6 md:gap-12">
                         <div class="md:w-1/2 md:text-right text-center">
-                            <h4 class="font-bold text-teal-600 text-lg leading-none mb-1">Detección</h4>
-                            <p class="text-xs text-gray-500">Identificamos 5 a 10 alumnos con necesidad de apoyo urgente.</p>
+                            <h4 class="font-bold text-[#6ddbf3] text-lg leading-none mb-1">Detección</h4>
+                            <p class="text-xs text-gray-500">Realizacion de actividades para la deteccion.</p>
                         </div>
-                        <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">1</div>
+                        <div class="w-8 h-8 bg-[#6ddbf3] rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">1</div>
                         <div class="md:w-1/2"></div>
                     </div>
 
                     <div class="relative flex flex-col md:flex-row-reverse items-center gap-6 md:gap-12">
                         <div class="md:w-1/2 md:text-left text-center">
-                            <h4 class="font-bold text-teal-600 text-lg leading-none mb-1">Sesiones Semanales</h4>
-                            <p class="text-xs text-gray-500">1 día a la semana. Sesiones de 45 min por alumno.</p>
+                            <h4 class="font-bold text-[#6ddbf3] text-lg leading-none mb-1">Sesiones</h4>
+                            <p class="text-xs text-gray-500">toda la semana.</p>
                         </div>
-                        <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">2</div>
+                        <div class="w-8 h-8 bg-[#6ddbf3] rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">2</div>
                         <div class="md:w-1/2"></div>
                     </div>
 
                     <div class="relative flex flex-col md:flex-row items-center gap-6 md:gap-12">
                         <div class="md:w-1/2 md:text-right text-center">
-                            <h4 class="font-bold text-teal-600 text-lg leading-none mb-1">Resultados</h4>
-                            <p class="text-xs text-gray-500">Duración del piloto: 2 a 4 semanas con reporte de avances.</p>
+                            <h4 class="font-bold text-[#6ddbf3] text-lg leading-none mb-1">Seguimiento</h4>
+                            <p class="text-xs text-gray-500">Atención continua con reportes de avances periódicos.</p>
                         </div>
-                        <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">3</div>
+                        <div class="w-8 h-8 bg-[#6ddbf3] rounded-full flex items-center justify-center text-white font-bold text-xs relative z-10">3</div>
                         <div class="md:w-1/2"></div>
                     </div>
                 </div>
@@ -218,7 +220,7 @@
             <div class="max-w-4xl mx-auto px-4">
                 <div class="flex flex-col md:flex-row gap-8 items-center">
                     <div class="md:w-1/3">
-                        <div class="bg-teal-600 text-white p-8 rounded-2xl shadow-xl">
+                        <div class="bg-[#6ddbf3] text-white p-8 rounded-2xl shadow-xl">
                             <h3 class="text-xl font-bold mb-4 leading-tight italic">Cero riesgos para el director</h3>
                             <i class="fas fa-shield-check text-4xl opacity-50"></i>
                         </div>
@@ -227,11 +229,11 @@
                         <h3 class="text-2xl font-bold text-slate-800 leading-tight">¿Cómo manejamos los casos delicados?</h3>
                         <div class="space-y-4">
                             <div class="flex gap-3">
-                                <i class="fas fa-circle-check text-teal-500 mt-1"></i>
+                                <i class="fas fa-circle-check text-[#6ddbf3] mt-1"></i>
                                 <p class="text-sm text-slate-600"><strong>No sustituimos terapia:</strong> Nuestro enfoque es acompañamiento y primer contacto.</p>
                             </div>
                             <div class="flex gap-3">
-                                <i class="fas fa-circle-check text-teal-500 mt-1"></i>
+                                <i class="fas fa-circle-check text-[#6ddbf3] mt-1"></i>
                                 <p class="text-sm text-slate-600"><strong>Protocolo de canalización:</strong> Casos de riesgo grave (violencia o autolesión) se derivan inmediatamente a las autoridades competentes.</p>
                             </div>
                         </div>
@@ -244,19 +246,19 @@
                 <h2 class="text-2xl sm:text-3xl font-bold text-center mb-10 leading-tight">¿Qué necesita la escuela para iniciar?</h2>
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="text-center">
-                        <div class="text-teal-400 text-3xl mb-4"><i class="fas fa-door-open"></i></div>
+                        <div class="text-[#6ddbf3] text-3xl mb-4"><i class="fas fa-door-open"></i></div>
                         <h4 class="font-bold mb-2">Espacio Privado</h4>
                         <p class="text-xs text-slate-400 leading-relaxed">Un cubículo o salón pequeño que garantice la privacidad de la charla.</p>
                     </div>
                     <div class="text-center">
-                        <div class="text-teal-400 text-3xl mb-4"><i class="fas fa-user-check"></i></div>
+                        <div class="text-[#6ddbf3] text-3xl mb-4"><i class="fas fa-user-check"></i></div>
                         <h4 class="font-bold mb-2">Selección</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Un grupo inicial de 5 a 10 alumnos detectados con necesidad de apoyo.</p>
+                        <p class="text-xs text-slate-400 leading-relaxed">Realizacion de actividades para lograr una seleccion.</p>
                     </div>
                     <div class="text-center">
-                        <div class="text-teal-400 text-3xl mb-4"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="text-[#6ddbf3] text-3xl mb-4"><i class="fas fa-calendar-alt"></i></div>
                         <h4 class="font-bold mb-2">Disponibilidad</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Acceso a las instalaciones un día fijo a la semana durante la fase piloto.</p>
+                        <p class="text-xs text-slate-400 leading-relaxed">Acceso a las instalaciones toda la semana para la atención presencial.</p>
                     </div>
                 </div>
             </div>
@@ -269,18 +271,18 @@
                     <div class="card p-8 flex flex-col items-center border-l-4 border-slate-200">
                         <div class="w-20 h-20 bg-slate-800 rounded-full mb-4 flex items-center justify-center text-white text-3xl font-bold">A</div>
                         <h4 class="font-bold text-gray-800 leading-tight">Andriy Eduardo</h4>
-                        <p class="text-teal-600 text-[10px] font-bold mb-2 uppercase tracking-widest">Director | Salina Cruz</p>
+                        <p class="text-[#6ddbf3] text-[10px] font-bold mb-2 uppercase tracking-widest">Director | Salina Cruz</p>
                         <p class="text-xs text-gray-500">Gestión y vinculación directa con secundarias locales.</p>
                     </div>
                     <div class="card p-8 flex flex-col items-center border-l-4 border-teal-500">
-                        <div class="w-20 h-20 bg-teal-100 rounded-full mb-4 flex items-center justify-center text-teal-600 text-3xl font-bold">D</div>
+                        <div class="w-20 h-20 bg-[#6ddbf3]/20 rounded-full mb-4 flex items-center justify-center text-[#6ddbf3] text-3xl font-bold">D</div>
                         <h4 class="font-bold text-gray-800 leading-tight">Danny Rincon</h4>
-                        <p class="text-teal-600 text-[10px] font-bold mb-2 uppercase tracking-widest">Psicóloga Clínica</p>
+                        <p class="text-[#6ddbf3] text-[10px] font-bold mb-2 uppercase tracking-widest">Psicóloga Clínica</p>
                         <p class="text-xs text-gray-500">Encargada de las intervenciones y seguimiento de alumnos.</p>
                     </div>
                 </div>
-                <div class="mt-12 bg-teal-50 p-6 rounded-2xl border border-teal-100">
-                    <p class="text-sm text-teal-800 leading-relaxed">
+                <div class="mt-12 bg-[#6ddbf3]/10 p-6 rounded-2xl border border-[#6ddbf3]/20">
+                    <p class="text-sm text-slate-800 leading-relaxed">
                         <strong>Alcance Local:</strong> Proyecto operando exclusivamente en Salina Cruz para garantizar atención personalizada.
                     </p>
                 </div>
@@ -290,34 +292,34 @@
         <section id="contacto" class="py-10 sm:py-16 md:py-24 scroll-mt-24 bg-slate-50 gsap-reveal">
             <div class="max-w-4xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-2 mb-4">¿Deseas implementar este piloto?</h2>
-                    <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto px-2 leading-relaxed">Si eres directivo o docente interesado en llevar Conecta + a tu escuela, déjanos tus datos y nos pondremos en contacto para una visita informativa.</p>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-2 mb-4">¿Deseas implementar Conecta+?</h2>
+                    <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto px-2 leading-relaxed">Si eres directivo o docente interesado en llevar este programa a tu escuela, déjanos tus datos y nos pondremos en contacto para una visita informativa.</p>
                 </div>
 
-                <div class="card p-5 sm:p-10 border-t-8 border-teal-600 shadow-xl bg-white mx-1">
+                <div class="card p-5 sm:p-10 border-t-8 border-[#6ddbf3] shadow-xl bg-white mx-1">
                     <form id="psicologoForm" class="space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="space-y-1">
                                 <label class="block text-[10px] font-bold uppercase text-gray-400 ml-1">Nombre y Cargo</label>
-                                <input type="text" name="nombre_contacto" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-teal-500 transition outline-none text-sm" placeholder="Ej. Prof. Juan Pérez - Director">
+                                <input type="text" name="nombre_contacto" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[#6ddbf3] transition outline-none text-sm" placeholder="Ej. Prof. Juan Pérez - Director">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[10px] font-bold uppercase text-gray-400 ml-1">Nombre de la Escuela</label>
-                                <input type="text" name="nombre_escuela" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-teal-500 transition outline-none text-sm" placeholder="Secundaria Técnica No. X">
+                                <input type="text" name="nombre_escuela" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[#6ddbf3] transition outline-none text-sm" placeholder="Secundaria Técnica No. X">
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="space-y-1">
                                 <label class="block text-[10px] font-bold uppercase text-gray-400 ml-1">Correo Electrónico</label>
-                                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-teal-500 transition outline-none text-sm" placeholder="ejemplo@correo.com">
+                                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[#6ddbf3] transition outline-none text-sm" placeholder="ejemplo@correo.com">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[10px] font-bold uppercase text-gray-400 ml-1">Teléfono Directo</label>
-                                <input type="tel" name="telefono" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-teal-500 transition outline-none text-sm" placeholder="10 dígitos">
+                                <input type="tel" name="telefono" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[#6ddbf3] transition outline-none text-sm" placeholder="10 dígitos">
                             </div>
                         </div>
-                        <button type="submit" id="submitBtn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-teal-700 transform transition active:scale-95 flex flex-col sm:flex-row justify-center items-center gap-2 text-sm sm:text-lg shadow-xl">
-                            <i class="fas fa-paper-plane"></i> Solicitar Información del Piloto
+                        <button type="submit" id="submitBtn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:opacity-90 transform transition active:scale-95 flex flex-col sm:flex-row justify-center items-center gap-2 text-sm sm:text-lg shadow-xl">
+                            <i class="fas fa-paper-plane"></i> Solicitar Información del Programa
                         </button>
                     </form>
                     <div id="formResponse" class="hidden mt-6 p-4 rounded-lg text-center font-semibold"></div>
@@ -328,11 +330,11 @@
         <section id="contacto_footer" class="py-12 bg-white gsap-reveal">
             <div class="max-w-4xl mx-auto px-4 text-center">
                  <p class="text-gray-700 mb-2 text-xs sm:text-sm">
-                    <i class="fas fa-user text-teal-600 mr-2"></i>
+                    <i class="fas fa-user text-[#6ddbf3] mr-2"></i>
                     <strong>Director General:</strong> Andriy Eduardo Torres Villaseñor
                 </p>
                 <p class="text-gray-700 mb-2 text-xs sm:text-sm">
-                    <i class="fas fa-phone text-teal-600 mr-2"></i>
+                    <i class="fas fa-phone text-[#6ddbf3] mr-2"></i>
                     <a href="tel:+529715376572" class="text-teal-600 hover:underline">+52 971 537 6572</a>
                 </p>
             </div>
@@ -342,9 +344,14 @@
     <footer class="bg-slate-900 text-white py-12">
         <div class="container mx-auto px-4 text-center">
             <div class="mb-6">
-                <span class="text-2xl font-bold italic tracking-tighter">Conecta<span class="text-teal-500">+</span></span>
+                <span class="text-2xl font-bold italic tracking-tighter">Conecta<span class="text-[#6ddbf3]">+</span></span>
             </div>
-            <p class="text-slate-500 text-[10px] mb-4 uppercase tracking-widest">&copy; 2026 Conecta + | Implementación Local Fase 1</p>
+            <p class="text-slate-500 text-[10px] mb-4 uppercase tracking-widest">&copy; 2026 Conecta + | Implementación Local</p>
+            <div class="mt-4 pt-4 border-t border-slate-800">
+                <a href="plataforma.html" class="text-xs text-slate-400 hover:text-[#6ddbf3] transition underline underline-offset-4">
+                    Acceso exclusivo para Practicantes (Registro de Evidencias)
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -404,7 +411,7 @@
             const submitBtn = document.getElementById('submitBtn');
             
             // AQUÍ DEBES PEGAR LA URL QUE TE DA GOOGLE AL "IMPLEMENTAR COMO APLICACIÓN WEB"
-            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/TU_ID_DE_SCRIPT/exec';
+            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
 
             psicologoForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
