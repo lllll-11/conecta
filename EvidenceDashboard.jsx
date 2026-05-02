@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdCIGgJ88Pngk88KTlWQEbafKPNkGLWJUBXyxugaIqG-MeH4uCE0CiezWhnkEOpQGYOQ/exec';
 
 const EvidenceDashboard = ({ practitioner }) => {
   const [view, setView] = useState('list'); // 'list', 'create', 'folder'

@@ -411,7 +411,7 @@
             const submitBtn = document.getElementById('submitBtn');
             
             // AQUÍ DEBES PEGAR LA URL QUE TE DA GOOGLE AL "IMPLEMENTAR COMO APLICACIÓN WEB"
-            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
+            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwdCIGgJ88Pngk88KTlWQEbafKPNkGLWJUBXyxugaIqG-MeH4uCE0CiezWhnkEOpQGYOQ/exec';
 
             psicologoForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -419,7 +419,10 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
                 const formData = new FormData(psicologoForm);
-                const data = Object.fromEntries(formData.entries());
+                const data = {
+                    action: 'contact_request',
+                    data: Object.fromEntries(formData.entries())
+                };
 
                 try {
                     const response = await fetch(GAS_WEB_APP_URL, {
@@ -436,7 +439,7 @@
                         responseDiv.className = 'mt-6 p-4 rounded-lg text-center font-semibold bg-green-100 text-green-700 block';
                         psicologoForm.reset();
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Quiero implementar el piloto en mi escuela';
+                        submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Enviado';
 
                 } catch (error) {
                     responseDiv.textContent = 'Error al enviar. Por favor contacta directamente al director vía teléfono.';

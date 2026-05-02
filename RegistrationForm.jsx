@@ -10,7 +10,7 @@ const RegistrationForm = ({ onBack }) => {
     turno: 'Matutino'
   });
 
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwdCIGgJ88Pngk88KTlWQEbafKPNkGLWJUBXyxugaIqG-MeH4uCE0CiezWhnkEOpQGYOQ/exec';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

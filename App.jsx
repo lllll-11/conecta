@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EvidenceDashboard from './EvidenceDashboard';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwXaL9rnCGJdqaLbCPgiiD2YzQkRhQ4pseXVN0fZagQfl1_3UL9C6KfxrMSkoENEH_/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdCIGgJ88Pngk88KTlWQEbafKPNkGLWJUBXyxugaIqG-MeH4uCE0CiezWhnkEOpQGYOQ/exec';
 
 function App() {
   const [practitioner, setPractitioner] = useState(localStorage.getItem('practitioner_name'));
