@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conecta+ | Plataforma de Gestión</title>
+    <link rel="icon" type="image/png" href="dc.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -107,7 +108,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-2 tracking-widest">ID de Caso (Automático)</label>
-                        <input type="text" name="case_id" id="next-case-id" readonly class="w-full px-5 py-4 rounded-2xl bg-slate-100 border border-slate-200 outline-none text-slate-500 cursor-not-allowed font-mono">
+                        <input type="text" id="next-case-id" readonly class="w-full px-5 py-4 rounded-2xl bg-slate-100 border border-slate-200 outline-none text-slate-500 cursor-not-allowed font-mono">
                     </div>
                     <button type="submit" class="submit-btn w-full py-5 bg-slate-900 hover:bg-[#6ddbf3] text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl transition-all active:scale-[0.98] mt-4">Crear Caso</button>
                     <p class="mt-4 text-[9px] text-slate-400 text-center leading-tight italic tracking-tight">La información registrada respeta la confidencialidad absoluta de los casos.</p>
@@ -284,7 +285,7 @@
 
     <script>
         // REEMPLAZA CON TU URL DE APPS SCRIPT
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzS8JtpL4SIMxGZCYwiQfuPwcxmw1MD5q8PHD2qP6cwhFA8Bk129yoDj1jc45B62-CmgQ/exec';
 
         let allCases = []; 
         let allEvidences = [];
@@ -299,7 +300,6 @@
             if (practitioner) {
                 if (role === 'admin') {
                     showView('admin');
-                    loadEvidences();
                 } else {
                     loadInitialCaseData();
                 }
@@ -463,16 +463,7 @@
         function showView(viewName) {
             // Si vamos a registrar un alumno, generamos el ID automáticamente
             if (viewName === 'create-case') {
-                let nextId = "001";
-                if (allCases.length > 0) {
-                    // Buscamos el ID más alto, lo convertimos a número y sumamos 1
-                    const ids = allCases.map(c => parseInt(c.case_id)).filter(id => !isNaN(id));
-                    if (ids.length > 0) {
-                        const maxId = Math.max(...ids);
-                        nextId = String(maxId + 1).padStart(3, '0');
-                    }
-                }
-                document.getElementById('next-case-id').value = nextId;
+                document.getElementById('next-case-id').value = "Auto-asignado";
             }
 
             document.querySelectorAll('.view').forEach(v => {
@@ -482,6 +473,13 @@
             document.getElementById(`view-${viewName}`).classList.add('active');
             document.getElementById(`view-${viewName}`).classList.remove('hidden');
             
+            // Si volvemos al panel de admin o gestión, nos aseguramos de refrescar datos
+            if (viewName === 'admin' || viewName === 'admin-manage') {
+                if (localStorage.getItem('user_role') === 'admin') {
+                    loadEvidences(); // loadEvidences ahora es la función maestra para Admin
+                }
+            }
+
             if (viewName === 'admin-manage') {
                 loadAdminSetupData();
             }
@@ -532,26 +530,42 @@
         // Cargar Evidencias (Solo Admin)
         async function loadEvidences() {
             const content = document.getElementById('admin-content');
-            content.innerHTML = `<div class="py-12 text-center text-slate-400 italic"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando datos del servidor...</div>`;
+            content.innerHTML = `<div class="py-12 text-center text-slate-400 italic"><i class="fas fa-circle-notch fa-spin mr-2"></i>Conectando con el servidor...</div>`;
 
             try {
+                if (!navigator.onLine) throw new Error("Sin conexión a Internet detectable");
+                
+                console.log("Intentando conectar con:", GAS_URL);
+
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
-                    // Usamos la acción unificada para admin que trae casos, evidencias y escuelas
                     body: JSON.stringify({ action: 'get_admin_dashboard_data' }) 
                 });
+
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
                 const result = await response.json();
+                console.log("Datos recibidos con éxito:", result);
 
                 if (result.result === 'success') {
                     allCases = (result.cases || []).map(c => ({...c, case_id: String(c.case_id)}));
                     allEvidences = (result.evidences || []).map(ev => ({...ev, case_id: String(ev.case_id)}));
-                    allSchools = result.schools || []; // ESTA LÍNEA CORRIGE EL BLOQUEO
+                    allSchools = (result.schools || []).filter(s => s && s.trim() !== "");
                     renderPractitionerList();
+                    renderManageUI(); // También actualizamos la interfaz de gestión
                 } else {
-                    content.innerHTML = `<div class="py-12 text-center text-red-500">Error: ${result.message}</div>`;
+                    content.innerHTML = `<div class="py-12 text-center bg-red-50 rounded-3xl border border-red-100 mx-4">
+                        <p class="text-red-600 font-bold mb-4">Error del Servidor: ${result.message}</p>
+                        <button onclick="loadEvidences()" class="px-4 py-2 bg-slate-800 text-white rounded-xl text-sm font-bold">Reintentar carga</button>
+                    </div>`;
                 }
             } catch (error) {
-                content.innerHTML = `<div class="py-12 text-center text-red-500">Error de conexión con el servidor.</div>`;
+                console.error("Detalles del fallo de conexión:", error);
+                content.innerHTML = `<div class="py-12 text-center bg-amber-50 rounded-3xl border border-amber-100 mx-4">
+                    <i class="fas fa-wifi-slash text-amber-500 text-2xl mb-4"></i>
+                    <p class="text-amber-800 font-bold mb-4">Conexión interrumpida (Red inestable o DNS).</p>
+                    <button onclick="loadEvidences()" class="px-6 py-2 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest">Verificar y Reintentar</button>
+                </div>`;
             }
         }
 
@@ -572,7 +586,7 @@
             searchContainer.classList.remove('hidden');
 
             if (allSchools.length === 0) {
-                content.innerHTML = `<p class="text-center py-10 text-slate-400 italic">Cargando escuelas...</p>`;
+                content.innerHTML = `<p class="text-center py-10 text-slate-400 italic">No hay sedes registradas. Dirígete a la pestaña "Gestión" para registrar tu primera institución.</p>`;
                 return;
             }
 
@@ -832,6 +846,23 @@
 
         // --- FUNCIONES DE GESTIÓN ADMIN ---
 
+        function renderManageUI() {
+            const select = document.getElementById('manage-school-select');
+            const list = document.getElementById('manage-schools-list');
+            
+            if (select) {
+                select.innerHTML = allSchools.map(s => `<option value="${s}">${s}</option>`).join('') || '<option value="General">General</option>';
+            }
+
+            if (list) {
+                list.innerHTML = allSchools.map(s => `
+                    <div class="p-4 bg-slate-50 rounded-xl text-sm font-bold text-slate-600 flex justify-between items-center">
+                        ${s} <i class="fas fa-school text-[#6ddbf3]"></i>
+                    </div>
+                `).join('') || '<p class="text-xs text-slate-400 italic">No hay sedes registradas.</p>';
+            }
+        }
+
         async function loadAdminSetupData() {
             try {
                 const response = await fetch(GAS_URL, {
@@ -840,11 +871,12 @@
                 });
                 const result = await response.json();
                 if (result.result === 'success') {
-                    allSchools = result.schools || [];
-                    const select = document.getElementById('manage-school-select');
-                    const list = document.getElementById('manage-schools-list');
-                    if (select) select.innerHTML = allSchools.map(s => `<option value="${s}">${s}</option>`).join('');
-                    if (list) list.innerHTML = allSchools.map(s => `<div class="p-4 bg-slate-50 rounded-xl text-sm font-bold text-slate-600 flex justify-between items-center">${s} <i class="fas fa-school text-[#6ddbf3]"></i></div>`).join('');
+                    allSchools = (result.schools || []).filter(s => s && s.trim() !== "");
+                    renderManageUI();
+                    // Si estamos en la vista de admin (Evidencias), renderizamos la lista de escuelas
+                    if (document.getElementById('view-admin').classList.contains('active')) {
+                        renderAdminSchoolList();
+                    }
                 }
             } catch (e) { console.error(e); }
         }
@@ -965,6 +997,8 @@
                     if (action === 'login') {
                         localStorage.setItem('practitioner_name', data.nombre);
                         localStorage.setItem('user_role', 'practitioner');
+                        localStorage.setItem('practitioner_school', result.school || 'General'); // Guardar la escuela del practicante
+                        currentSchool = result.school || 'General'; // Actualizar la variable local
                         setTimeout(() => {
                             // Llamamos a la carga de datos inmediatamente para ganar tiempo
                             loadInitialCaseData();
@@ -1023,6 +1057,7 @@
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
             data.practitioner_creator = localStorage.getItem('practitioner_name');
+            data.school = currentSchool; // Asegurar que el caso se cree con la escuela correcta
             sendToGAS('create_case', data, this);
         });
 

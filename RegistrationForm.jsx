@@ -11,7 +11,7 @@ const RegistrationForm = ({ onBack }) => {
     school: 'General'
   });
 
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbzS8JtpL4SIMxGZCYwiQfuPwcxmw1MD5q8PHD2qP6cwhFA8Bk129yoDj1jc45B62-CmgQ/exec';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

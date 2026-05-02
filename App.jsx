@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EvidenceDashboard from './EvidenceDashboard';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydO_CTMKNdLWD-ebmY3VikbeGFcIHdKQzWXQwCpxPJN62k2LowGyCxsRSbJYWbdQfsRQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzS8JtpL4SIMxGZCYwiQfuPwcxmw1MD5q8PHD2qP6cwhFA8Bk129yoDj1jc45B62-CmgQ/exec';
 
 function App() {
   const [practitioner, setPractitioner] = useState(localStorage.getItem('practitioner_name'));
@@ -56,6 +56,7 @@ function App() {
   };
 
   const logout = () => {
+    if (!window.confirm('¿Estás seguro de que deseas cerrar sesión?')) return;
     localStorage.removeItem('practitioner_name');
     localStorage.removeItem('practitioner_school');
     setPractitioner(null);
